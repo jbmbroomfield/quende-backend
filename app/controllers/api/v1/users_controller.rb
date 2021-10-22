@@ -1,8 +1,12 @@
 class Api::V1::UsersController < ApplicationController
 
     def create
+        puts [
+            '--------------',
+            user_params,
+            '------------'
+        ]
         user = User.create(user_params)
-        puts user_params
         if user.valid?
             render json: { user: UserSerializer.new(user) }, status: :created
         else
@@ -18,7 +22,14 @@ class Api::V1::UsersController < ApplicationController
     private
 
     def user_params
-        params.require(:user).permit(:username, :email, :password, :password_confirmation)
+        params.require(:user).permit(
+            :username,
+            :email,
+            password_authentication_attributes: [
+                :password,
+                :password_confirmation
+            ]
+        )
     end
 
 end
