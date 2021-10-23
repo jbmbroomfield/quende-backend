@@ -5,7 +5,7 @@ class Api::V1::SubsectionsController < ApplicationController
     def create
         subsection = Subsection.create(subsection_params)
         if subsection.valid?
-            render json: { section: SubsectionSerializer.new(subsection) }, status: :created
+            render json: SubsectionSerializer.new(subsection), status: :created
         else
             render json: { error: 'failed to create subsection' }, status: :not_acceptable
         end
@@ -13,7 +13,10 @@ class Api::V1::SubsectionsController < ApplicationController
 
     def index
         subsections = Subsection.all
-        render json: subsections, each_serializer: SubsectionSerializer, status: :ok
+        options = {
+            include: [:section]
+        }
+        render json: SubsectionSerializer.new(subsections, options)
     end
 
     private

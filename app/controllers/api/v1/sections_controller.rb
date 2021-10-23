@@ -5,7 +5,7 @@ class Api::V1::SectionsController < ApplicationController
     def create
         section = Section.create(section_params)
         if section.valid?
-            render json: { section: SectionSerializer.new(section) }, status: :created
+            render json: SectionSerializer.new(section), status: :created
         else
             render json: { error: 'failed to create section' }, status: :not_acceptable
         end
@@ -13,13 +13,13 @@ class Api::V1::SectionsController < ApplicationController
 
     def index
         sections = Section.all
-        render json: sections, each_serializer: SectionSerializer, status: :ok
+        render json: SectionSerializer.new(sections)
     end
 
     def show
         section = Section.find_by(id: params[:id])
         if section
-            render json: section, serializer: SectionSerializer, status: :ok
+            render json: SectionSerializer.new(section)
         else
             render json: { error: 'section not found' }, status: :not_acceptable
         end

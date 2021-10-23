@@ -1,3 +1,4 @@
-class SectionSerializer < ActiveModel::Serializer
+class SectionSerializer
+  include FastJsonapi::ObjectSerializer
   attributes :title
 end

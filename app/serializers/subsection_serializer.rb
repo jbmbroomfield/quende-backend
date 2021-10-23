@@ -1,3 +1,5 @@
-class SubsectionSerializer < ActiveModel::Serializer
-  attributes :title, :section_id
+class SubsectionSerializer
+  include FastJsonapi::ObjectSerializer
+  attributes :title
+  belongs_to :section
 end
