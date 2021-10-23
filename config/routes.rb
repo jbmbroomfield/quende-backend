@@ -7,8 +7,9 @@ Rails.application.routes.draw do
 			post '/login', to: 'auth#create'
 			get '/profile', to: 'users#profile'
 
-			resources :sections, only: [:create, :index, :show]
-			resources :subsections, only: [:create, :index]
+			resources :sections, only: [:create, :index, :show] do
+				resources :subsections, only: [:create, :index]
+			end
 
 		end
   end
