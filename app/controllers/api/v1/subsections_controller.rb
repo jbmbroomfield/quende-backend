@@ -11,6 +11,11 @@ class Api::V1::SubsectionsController < ApplicationController
         end
     end
 
+    def index
+        subsections = Subsection.all
+        render json: subsections, each_serializer: SubsectionSerializer, status: :ok
+    end
+
     private
 
     def subsection_params
