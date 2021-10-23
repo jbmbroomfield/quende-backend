@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 			post '/login', to: 'auth#create'
 			get '/profile', to: 'users#profile'
 
-			resources :sections, only: [:create]
+			resources :sections, only: [:create, :index]
 
 		end
   end

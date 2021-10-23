@@ -11,6 +11,11 @@ class Api::V1::SectionsController < ApplicationController
         end
     end
 
+    def index
+        sections = Section.all
+        render json: sections, each_serializer: SectionSerializer, status: :ok
+    end
+
     private
 
     def section_params
