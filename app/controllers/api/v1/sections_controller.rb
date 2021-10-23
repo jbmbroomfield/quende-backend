@@ -16,6 +16,15 @@ class Api::V1::SectionsController < ApplicationController
         render json: sections, each_serializer: SectionSerializer, status: :ok
     end
 
+    def show
+        section = Section.find_by(id: params[:id])
+        if section
+            render json: section, serializer: SectionSerializer, status: :ok
+        else
+            render json: { error: 'section not found' }, status: :not_acceptable
+        end
+    end
+
     private
 
     def section_params
