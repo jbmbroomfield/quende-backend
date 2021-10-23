@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_23_030132) do
+ActiveRecord::Schema.define(version: 2021_10_23_045711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,15 @@ ActiveRecord::Schema.define(version: 2021_10_23_030132) do
     t.index ["section_id"], name: "index_subsections_on_section_id"
   end
 
+  create_table "topics", force: :cascade do |t|
+    t.bigint "subsection_id", null: false
+    t.string "title"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["subsection_id"], name: "index_topics_on_subsection_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
@@ -48,4 +57,5 @@ ActiveRecord::Schema.define(version: 2021_10_23_030132) do
 
   add_foreign_key "password_authentications", "users"
   add_foreign_key "subsections", "sections"
+  add_foreign_key "topics", "subsections"
 end
