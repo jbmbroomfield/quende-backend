@@ -12,8 +12,10 @@ Rails.application.routes.draw do
 			end
 
 			resources :subsections, only: [] do 
-				resources :topics, only: [:create]
+				resources :topics, only: [:create, :index]
 			end
+
+			resources :topics, only: [:show]
 
 		end
   end
