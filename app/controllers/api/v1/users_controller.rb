@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
 
-    skip_before_action :authorized, only: [:create]
+    skip_before_action :require_login, only: [:create] #, :show, :index]
 
     def create
         user = User.create(user_params)
@@ -14,7 +14,16 @@ class Api::V1::UsersController < ApplicationController
 
     def show
         user = User.find_by(id: params[:id])
-        render json: { user: UserSerializer.new(user) }, status: :ok
+        if user
+            render json: user, serializer: UserSerializer, status: :ok
+        else
+            render json: { error: 'user not found' }, status: :not_acceptable
+        end
+    end
+
+    def index
+        users = User.all
+        render json: users, each_serializer: UserSerializer, status: :ok
     end
 
     private

@@ -5,11 +5,6 @@ class User < ApplicationRecord
     accepts_nested_attributes_for :password_authentication
 
     def password_authenticate(password)
-        puts [
-            '-------------',
-            "authenticating #{password}",
-            '----------------'
-        ]
         password_authentication && password_authentication.authenticate(password)
     end
 
