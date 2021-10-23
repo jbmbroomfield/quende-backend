@@ -8,4 +8,8 @@ class User < ApplicationRecord
         password_authentication && password_authentication.authenticate(password)
     end
 
+    def admin?
+        account_level == 'admin'
+    end
+
 end
