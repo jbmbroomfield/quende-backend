@@ -4,3 +4,12 @@
 require_relative "config/application"
 
 Rails.application.load_tasks
+
+namespace :db do
+  namespace :test do
+    # puts 'rakefile'
+    task :prepare => :environment do
+      Rake::Task["db:seed"].invoke
+    end
+  end
+end

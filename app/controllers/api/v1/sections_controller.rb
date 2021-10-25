@@ -3,26 +3,15 @@ class Api::V1::SectionsController < ApplicationController
     before_action :require_admin, only: [:create]
 
     def create
-        section = Section.create(section_params)
-        if section.valid?
-            render json: SectionSerializer.new(section), status: :created
-        else
-            render json: { error: 'failed to create section' }, status: :not_acceptable
-        end
+        create_and_render(Section)
     end
 
     def index
-        sections = Section.all
-        render json: SectionSerializer.new(sections)
+        render_all
     end
 
     def show
-        section = Section.find_by(id: params[:id])
-        if section
-            render json: SectionSerializer.new(section)
-        else
-            render json: { error: 'section not found' }, status: :not_acceptable
-        end
+        render_one(Section)
     end
 
     private

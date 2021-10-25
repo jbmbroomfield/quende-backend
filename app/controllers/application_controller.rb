@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+    
+    include RenderHelper
 
     def encode_token(payload)
         JWT.encode(payload, ENV['jwt_key'])
