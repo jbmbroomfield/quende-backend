@@ -41,3 +41,18 @@ Section.create([
     {title: 'Second Section'},
     {title: 'Third Section'},
 ])
+
+Subsection.create([
+    {
+        title: 'First Subsection',
+        section_id: 1,
+    },
+    {
+        title: 'Second Subsection',
+        section_id: 1,
+    },
+    {
+        title: 'Third Subsection',
+        section_id: 2,
+    },
+])
