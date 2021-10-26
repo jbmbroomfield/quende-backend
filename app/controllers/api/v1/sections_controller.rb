@@ -3,7 +3,7 @@ class Api::V1::SectionsController < ApplicationController
     before_action :require_admin, only: [:create]
 
     def create
-        create_and_render(Section)
+        create_and_render
     end
 
     def index
@@ -11,7 +11,7 @@ class Api::V1::SectionsController < ApplicationController
     end
 
     def show
-        render_one(Section)
+        render_one
     end
 
     private

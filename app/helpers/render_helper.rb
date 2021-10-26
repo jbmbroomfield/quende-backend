@@ -4,8 +4,13 @@ module RenderHelper
         objects = class_name.all
         render_json(objects, class_name: class_string)
     end
+    
+    def render_where(params)
+        objects = class_name.where(params)
+        render_json(objects)
+    end
 
-    def render_one(class_name)
+    def render_one
         object = class_name.find_by(id: params[:id])
         if object
             render_json(object)
@@ -14,10 +19,18 @@ module RenderHelper
         end
     end
 
-    def create_and_render(class_name)
+    def create_and_render
         params = send(class_name.to_s.downcase + '_params')
         object = class_name.create(params)
         render_created(object)
+    end
+
+    def save_and_render(object)
+        if object.save
+            render_created(object)
+        else
+            failed_to_create(object)
+        end
     end
 
     private
@@ -31,20 +44,23 @@ module RenderHelper
     end
 
     def render_json(object, class_name: nil, status: :ok)
-        render json: serializer(object, class_name), status: status
+        render json: serializer(object), status: status
     end
 
     def render_created(object)
         if object.valid?
             render_json(object, status: :created)
         else
-            object_string = object.class.to_s.downcase
-            render json: { error: "failed to create #{object_string}" }, status: :not_acceptable
+            failed_to_create(object)
         end
     end
 
-    def serializer(object, class_string=null)
-        class_string ||= object.class.to_s
+    def failed_to_create(object)
+        object_string = object.class.to_s.downcase
+        render json: { error: "failed to create #{object_string}" }, status: :not_acceptable
+    end
+
+    def serializer(object)
         serializer_string = class_string + 'Serializer'
         serializer_string.constantize.new(object)
     end

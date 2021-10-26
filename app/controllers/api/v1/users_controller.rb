@@ -1,24 +1,21 @@
 class Api::V1::UsersController < ApplicationController
 
     def create
-        # p params
         user = User.create(user_params)
         if user.valid?
             @token = encode_token(user_id: user.id)
-            render json: UserSerializer.new(user), status: :created
+            render_json(user, status: :created)
         else
-            render json: { error: 'failed to create user' }, status: :not_acceptable
+            failed_to_create(user)
         end
     end
 
     def index
-        users = User.all
-        render json: UserSerializer.new(users)
+        render_all
     end
 
     def show
-        user = User.find_by(id: params[:id])
-        render json: UserSerializer.new(user)
+        render_one
     end
 
     private

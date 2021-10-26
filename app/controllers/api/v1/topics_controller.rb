@@ -3,25 +3,15 @@ class Api::V1::TopicsController < ApplicationController
     def create
         topic = Topic.new(topic_params)
         topic.subsection_id = params[:subsection_id]
-        if topic.save
-            render json: TopicSerializer.new(topic), status: :created
-        else
-            render json: { error: 'failed to create topic' }, status: :not_acceptable
-        end
+        save_and_render(topic)
     end
     
     def index
-        topics = Topic.where(subsection_id: params[:subsection_id])
-        render json: TopicSerializer.new(topics)
+        render_where(subsection_id: params[:subsection_id])
     end
 
     def show
-        topic = Topic.find_by(id: params[:id])
-        if topic
-            render json: TopicSerializer.new(topic)
-        else
-            render json: { error: 'topic not found' }, status: :not_acceptable
-        end
+        render_one
     end
 
     private
