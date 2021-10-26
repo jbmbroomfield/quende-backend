@@ -4,6 +4,8 @@ class User < ApplicationRecord
     
     accepts_nested_attributes_for :password_authentication
 
+    has_many :posts
+
     def to_s
         "#{username} - #{id}"
     end
