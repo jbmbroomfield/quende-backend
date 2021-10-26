@@ -15,7 +15,9 @@ Rails.application.routes.draw do
 				resources :topics, only: [:create, :index]
 			end
 
-			resources :topics, only: [:show]
+			resources :topics, only: [:show] do
+				resources :posts, only: [:create, :index]
+			end
 
 		end
   end

@@ -71,3 +71,21 @@ Topic.create([
         subsection_id: 2,
     },
 ])
+
+Post.create([
+    {
+        user_id: 1,
+        topic_id: 1,
+        text: 'First Post',
+    },
+    {
+        user_id: 2,
+        topic_id: 1,
+        text: 'Second Post',
+    },
+    {
+        user_id: 2,
+        topic_id: 2,
+        text: 'Third Post',
+    },
+])
