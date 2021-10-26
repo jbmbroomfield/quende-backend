@@ -17,8 +17,6 @@ RSpec.describe "Api::V1::Sections", type: :request do
     end
     it "returns data" do
       get "/api/v1/sections"
-      json = JSON.parse(response.body).deep_symbolize_keys
-      data = json[:data]
       expect(data.length).to eq(3)
       expect(data[0]).to eq(section1_data)
     end
@@ -31,9 +29,24 @@ RSpec.describe "Api::V1::Sections", type: :request do
     end
     it "returns data" do
       get "/api/v1/sections/1"
-      json = JSON.parse(response.body).deep_symbolize_keys
-      data = json[:data]
       expect(data).to eq(section1_data)
+    end
+  end
+
+  describe "POST create" do
+    it "returns http created and creates a new section" do
+      body = {
+        "section": {
+          "title": "Test Section"
+        }
+      }
+      headers = {
+        "Authorization": user1_auth
+      }
+      post "/api/v1/sections", params: body, headers: headers
+      expect(response).to have_http_status(:created)
+      expect(Section.count).to eq(4)
+      expect(Section.last.title).to eq('Test Section')
     end
   end
 

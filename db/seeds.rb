@@ -56,3 +56,18 @@ Subsection.create([
         section_id: 2,
     },
 ])
+
+Topic.create([
+    {
+        title: 'First Topic',
+        subsection_id: 1,
+    },
+    {
+        title: 'Second Topic',
+        subsection_id: 1,
+    },
+    {
+        title: 'Third Topic',
+        subsection_id: 2,
+    },
+])

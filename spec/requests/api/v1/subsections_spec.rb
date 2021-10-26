@@ -17,24 +17,26 @@ RSpec.describe "Api::V1::Subsections", type: :request do
     end
     it "returns data" do
       get "/api/v1/sections/1/subsections"
-      json = JSON.parse(response.body).deep_symbolize_keys
-      data = json[:data]
       expect(data.length).to eq(2)
       expect(data[0]).to eq(subsection1_data)
     end
   end
 
-  # describe "GET show" do
-  #   it "returns http success" do
-  #     get "/api/v1/subsections/1"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  #   it "returns data" do
-  #     get "/api/v1/subsections/1"
-  #     json = JSON.parse(response.body).deep_symbolize_keys
-  #     data = json[:data]
-  #     expect(data).to eq(subsection1_data)
-  #   end
-  # end
+  describe "POST create" do
+    it "returns http created and creates a new subsection" do
+      body = {
+        "subsection": {
+          "title": "Test Subsection"
+        }
+      }
+      headers = {
+        "Authorization": user1_auth
+      }
+      post "/api/v1/sections/1/subsections", params: body, headers: headers
+      expect(response).to have_http_status(:created)
+      expect(Subsection.last.title).to eq('Test Subsection')
+      expect(Subsection.count).to eq(4)
+    end
+  end
 
 end

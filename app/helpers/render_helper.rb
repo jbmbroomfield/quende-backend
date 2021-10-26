@@ -1,17 +1,5 @@
 module RenderHelper
 
-    def class_string
-        self.to_s.split('::')[2].split('sController')[0]
-    end
-
-    def class_name
-        class_string.constantize
-    end
-
-    def render_json(object, class_name: nil, status: :ok)
-        render json: serializer(object, class_name), status: status
-    end
-
     def render_all
         objects = class_name.all
         render_json(objects, class_name: class_string)
@@ -30,6 +18,20 @@ module RenderHelper
         params = send(class_name.to_s.downcase + '_params')
         object = class_name.create(params)
         render_created(object)
+    end
+
+    private
+
+    def class_string
+        self.to_s.split('::')[2].split('sController')[0]
+    end
+
+    def class_name
+        class_string.constantize
+    end
+
+    def render_json(object, class_name: nil, status: :ok)
+        render json: serializer(object, class_name), status: status
     end
 
     def render_created(object)

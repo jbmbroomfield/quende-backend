@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Section, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'can be created' do
+    section = Section.create(title: 'Test Section')
+    expect(section.save).to eq(true)
+  end
 end

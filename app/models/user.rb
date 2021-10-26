@@ -4,6 +4,10 @@ class User < ApplicationRecord
     
     accepts_nested_attributes_for :password_authentication
 
+    def to_s
+        "#{username} - #{id}"
+    end
+
     def password_authenticate(password)
         password_authentication && password_authentication.authenticate(password)
     end
