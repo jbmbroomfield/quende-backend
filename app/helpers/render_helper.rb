@@ -33,6 +33,10 @@ module RenderHelper
         end
     end
 
+    def render_json(object, class_name: nil, status: :ok)
+        render json: serializer(object), status: status
+    end
+
     private
 
     def class_string
@@ -41,10 +45,6 @@ module RenderHelper
 
     def class_name
         class_string.constantize
-    end
-
-    def render_json(object, class_name: nil, status: :ok)
-        render json: serializer(object), status: status
     end
 
     def render_created(object)

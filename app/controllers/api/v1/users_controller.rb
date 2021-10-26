@@ -18,6 +18,14 @@ class Api::V1::UsersController < ApplicationController
         render_one
     end
 
+    def current
+        if current_user
+            render_json(current_user)
+        else
+            render json: { error: "user not found" }, status: :not_acceptable
+        end
+    end
+
     private
 
     def user_params

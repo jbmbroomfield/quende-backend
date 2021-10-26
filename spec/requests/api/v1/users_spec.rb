@@ -43,4 +43,10 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
   end
 
+  describe "GET current" do
+    it "returns current user" do
+      expect(true).to eq(false)
+    end
+  end
+
 end
