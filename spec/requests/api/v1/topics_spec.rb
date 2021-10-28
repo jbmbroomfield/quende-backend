@@ -2,18 +2,19 @@ require 'rails_helper'
 
 topic1_attributes = {
   title: "First Topic",
+  subsection_id: 1
 }
 
 RSpec.describe "Api::V1::Topics", type: :request do
 
   describe "GET index" do
     it "returns http success" do
-      get "/api/v1/subsections/1/topics"
+      get "/api/v1/topics"
       expect(response).to have_http_status(:success)
     end
     it "returns data" do
-      get "/api/v1/subsections/1/topics"
-      expect(data.length).to eq(2)
+      get "/api/v1/topics"
+      expect(data.length).to eq(3)
       expect(data[0][:attributes]).to eq(topic1_attributes)
     end
   end

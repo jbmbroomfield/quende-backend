@@ -7,7 +7,7 @@ class Api::V1::TopicsController < ApplicationController
     end
     
     def index
-        render_where(subsection_id: params[:subsection_id])
+        render_all
     end
 
     def show

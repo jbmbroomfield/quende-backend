@@ -1,4 +1,4 @@
 class TopicSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :title
+  attributes :title, :subsection_id
 end
