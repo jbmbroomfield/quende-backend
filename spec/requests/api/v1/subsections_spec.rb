@@ -4,6 +4,7 @@ subsection1_data = {
   id: "1",
   type: "subsection",
   attributes: {
+    section_id: 1,
     title: "First Subsection"
   }
 }
@@ -12,12 +13,12 @@ RSpec.describe "Api::V1::Subsections", type: :request do
 
   describe "GET index" do
     it "returns http success" do
-      get "/api/v1/sections/1/subsections"
+      get "/api/v1/subsections"
       expect(response).to have_http_status(:success)
     end
     it "returns data" do
-      get "/api/v1/sections/1/subsections"
-      expect(data.length).to eq(2)
+      get "/api/v1/subsections"
+      expect(data.length).to eq(3)
       expect(data[0]).to eq(subsection1_data)
     end
   end

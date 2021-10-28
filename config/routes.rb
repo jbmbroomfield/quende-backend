@@ -9,10 +9,10 @@ Rails.application.routes.draw do
 			get '/profile', to: 'users#profile'
 
 			resources :sections, only: [:create, :index, :show] do
-				resources :subsections, only: [:create, :index]
+				resources :subsections, only: [:create]
 			end
 
-			resources :subsections, only: [] do 
+			resources :subsections, only: [:index] do 
 				resources :topics, only: [:create, :index]
 			end
 

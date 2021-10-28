@@ -9,7 +9,7 @@ class Api::V1::SubsectionsController < ApplicationController
     end
 
     def index
-        render_where(section_id: params[:section_id])
+        render_all
     end
 
     private
