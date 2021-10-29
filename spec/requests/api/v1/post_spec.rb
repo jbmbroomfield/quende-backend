@@ -3,7 +3,8 @@ require 'rails_helper'
 post1_attributes = {
   user_id: 1,
   text: "First Post",
-  tag: nil
+  tag: nil,
+  topic_id: 1,
 }
 
 RSpec.describe "Api::V1::Posts", type: :request do

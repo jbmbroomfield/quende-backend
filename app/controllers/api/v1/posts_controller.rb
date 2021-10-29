@@ -6,6 +6,7 @@ class Api::V1::PostsController < ApplicationController
         post = Post.new(post_params)
         post.topic_id = params[:topic_id]
         post.user = current_user
+        post.tag = Post.count.to_s
         save_and_render(post)
     end
     
