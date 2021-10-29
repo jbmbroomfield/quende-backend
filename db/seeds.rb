@@ -12,8 +12,8 @@ User.create([
         email: 'jimbroomy@hotmail.com',
         account_level: 'admin',
         password_authentication_attributes: {
-            password: 'jimjim',
-            password_confirmation: 'jimjim',
+            password: '123456',
+            password_confirmation: '123456',
         },
     },
     {
@@ -21,8 +21,8 @@ User.create([
         email: 'alice@alice.com',
         account_level: 'user',
         password_authentication_attributes: {
-            password: 'alice',
-            password_confirmation: 'alice',
+            password: '123456',
+            password_confirmation: '123456',
         },
     },
     {
@@ -30,8 +30,8 @@ User.create([
         email: 'bob@bob.com',
         account_level: 'user',
         password_authentication_attributes: {
-            password: 'bob',
-            password_confirmation: 'bob',
+            password: '123456',
+            password_confirmation: '123456',
         },
     },
 ])
@@ -54,6 +54,10 @@ Subsection.create([
     {
         title: 'Third Subsection',
         section_id: 2,
+    },
+    {
+        title: 'Fourth Subsection',
+        section_id: 3,
     },
 ])
 

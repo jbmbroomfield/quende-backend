@@ -18,7 +18,7 @@ RSpec.describe "Api::V1::Subsections", type: :request do
     end
     it "returns data" do
       get "/api/v1/subsections"
-      expect(data.length).to eq(3)
+      expect(data.length).to eq(4)
       expect(data[0]).to eq(subsection1_data)
     end
   end
@@ -36,7 +36,7 @@ RSpec.describe "Api::V1::Subsections", type: :request do
       post "/api/v1/sections/1/subsections", params: body, headers: headers
       expect(response).to have_http_status(:created)
       expect(Subsection.last.title).to eq('Test Subsection')
-      expect(Subsection.count).to eq(4)
+      expect(Subsection.count).to eq(5)
     end
   end
 
