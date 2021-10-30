@@ -10,13 +10,17 @@ module RenderHelper
         render_json(objects)
     end
 
-    def render_one
-        object = class_name.find_by(id: params[:id])
+    def render_object(object)
         if object
             render_json(object)
         else
             render json: { error: "#{object_string} not found" }, status: :not_acceptable
         end
+    end
+
+    def render_one
+        object = class_name.find_by(id: params[:id])
+        render_object(object)
     end
 
     def create_and_render

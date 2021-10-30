@@ -18,7 +18,13 @@ class Api::V1::TopicsController < ApplicationController
     end
 
     def show
-        render_one
+        topic = Topic.find_by(id: params[:id])
+        for_json = TopicSerializer.new(topic)
+        # if current_user
+        #     user_topic = UserTopic.find_or_create_by(user: current_user, topic: topic)
+        #     for_json["user_topic"] = UserTopicSerializer.new(user_topic)
+        # end
+        render json: for_json, status: :ok
     end
 
     private

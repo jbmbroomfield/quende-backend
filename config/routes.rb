@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 				resources :posts, only: [:create, :index]
 			end
 
+			get 'user_topics/:topic_id', to: 'user_topics#show'
+
 		end
 	end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_043524) do
+ActiveRecord::Schema.define(version: 2021_10_30_083237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,17 @@ ActiveRecord::Schema.define(version: 2021_10_26_043524) do
     t.index ["subsection_id"], name: "index_topics_on_subsection_id"
   end
 
+  create_table "user_topics", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "topic_id", null: false
+    t.integer "last_read_post_id"
+    t.boolean "subscribed", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["topic_id"], name: "index_user_topics_on_topic_id"
+    t.index ["user_id"], name: "index_user_topics_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
@@ -71,4 +82,6 @@ ActiveRecord::Schema.define(version: 2021_10_26_043524) do
   add_foreign_key "posts", "users"
   add_foreign_key "subsections", "sections"
   add_foreign_key "topics", "subsections"
+  add_foreign_key "user_topics", "topics"
+  add_foreign_key "user_topics", "users"
 end
