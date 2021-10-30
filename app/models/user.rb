@@ -5,6 +5,8 @@ class User < ApplicationRecord
     accepts_nested_attributes_for :password_authentication
 
     has_many :posts
+	
+	after_save :broadcast_update
 
     def to_s
         "#{username} - #{id}"

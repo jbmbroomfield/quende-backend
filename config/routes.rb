@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  namespace :api do
+	mount ActionCable.server => '/cable'
+	resources :posts
+
+	namespace :api do
 		namespace :v1 do
 
 			get '/current_user', to: 'users#current'
@@ -21,6 +24,6 @@ Rails.application.routes.draw do
 			end
 
 		end
-  end
+	end
 
 end
