@@ -35,6 +35,9 @@ RSpec.describe "Api::V1::Topics", type: :request do
       body = {
         "topic": {
           "title": "Test Topic"
+        },
+        "post": {
+          "text": "Test Text"
         }
       }
       headers = {

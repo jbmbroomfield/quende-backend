@@ -26,6 +26,8 @@ Rails.application.routes.draw do
 			get 'user_topics/:topic_id', to: 'user_topics#show'
 			post 'user_topics/:topic_id/subscribe', to: 'user_topics#subscribe'
 
+			resources :notifications, only: [:index, :destroy]
+			
 		end
 	end
 

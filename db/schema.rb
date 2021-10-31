@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_30_083237) do
+ActiveRecord::Schema.define(version: 2021_10_31_093709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "category"
+    t.integer "object_id"
+    t.integer "number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
 
   create_table "password_authentications", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -77,6 +87,7 @@ ActiveRecord::Schema.define(version: 2021_10_30_083237) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "notifications", "users"
   add_foreign_key "password_authentications", "users"
   add_foreign_key "posts", "topics"
   add_foreign_key "posts", "users"

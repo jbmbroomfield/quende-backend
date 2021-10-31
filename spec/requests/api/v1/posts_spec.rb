@@ -9,7 +9,7 @@ post1_attributes = {
 
 RSpec.describe "Api::V1::Posts", type: :request do
 
-  describe "GET /index" do
+  describe "GET index" do
     it "returns http success" do
       get "/api/v1/topics/1/posts"
       expect(response).to have_http_status(:success)
@@ -17,7 +17,7 @@ RSpec.describe "Api::V1::Posts", type: :request do
     it "returns data" do
       get "/api/v1/topics/1/posts"
       expect(data.length).to eq(2)
-      expect(data[0][:attributes]).to eq(post1_attributes)
+      expect(data[0][:attributes][:text]).to eq("First Post")
     end
   end
 

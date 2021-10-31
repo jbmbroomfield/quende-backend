@@ -3,6 +3,7 @@ class Api::V1::TopicsController < ApplicationController
     def create
         topic = Topic.create(topic_params)
         topic.subsection_id = params[:subsection_id]
+        puts params
         post_params = params.require(:post).permit(
             :text
         )

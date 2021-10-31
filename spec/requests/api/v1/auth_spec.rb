@@ -7,7 +7,7 @@ RSpec.describe "Api::V1::Auths", type: :request do
 			"user": {
 				"username": "Jim",
 				"password_authentication_attributes": {
-					"password": "jimjim"
+					"password": "bob"
 				}
 			}
 		}

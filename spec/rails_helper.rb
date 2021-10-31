@@ -92,6 +92,12 @@ def user1_auth
   "Bearer #{user1_jwt}"
 end
 
+def user1_headers
+  headers = {
+    "Authorization": user1_auth
+  }
+end
+
 def user2_jwt
   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.HODNacMYMYyuASAh560au8tt3zV2kaVJHmI0oXYzBrU"
 end

@@ -45,7 +45,8 @@ RSpec.describe "Api::V1::Users", type: :request do
 
   describe "GET current" do
     it "returns current user" do
-      expect(true).to eq(false)
+      get "/api/v1/current_user", headers: user1_headers
+      expect(data[:attributes][:username]).to eq('Jim')
     end
   end
 
