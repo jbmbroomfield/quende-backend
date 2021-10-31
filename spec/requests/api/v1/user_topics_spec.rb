@@ -29,7 +29,8 @@ RSpec.describe "Api::V1::UserTopics", type: :request do
       headers = {
         "Authorization": user1_auth
       }
-      post "/api/v1/user_topics/1/subscribe", headers: headers
+      params = { "subscribed": true }
+      post "/api/v1/user_topics/1/subscribe", headers: headers, params: params
       expect(response).to have_http_status(:success)
       expect(data[:attributes]).to eq(user_topic1_attributes_subscribed)
       expect(UserTopic.first.subscribed).to eq(true)
@@ -41,8 +42,9 @@ RSpec.describe "Api::V1::UserTopics", type: :request do
       headers = {
         "Authorization": user1_auth
       }
+      params = { "subscribed": false }
       user_topic = UserTopic.create(user_id: 1, topic_id: 1, subscribed: true)
-      post "/api/v1/user_topics/1/unsubscribe", headers: headers
+      post "/api/v1/user_topics/1/subscribe", headers: headers, params: params
       expect(response).to have_http_status(:success)
       expect(data[:attributes]).to eq(user_topic1_attributes)
       expect(UserTopic.first.subscribed).to eq(false)

@@ -25,7 +25,6 @@ Rails.application.routes.draw do
 
 			get 'user_topics/:topic_id', to: 'user_topics#show'
 			post 'user_topics/:topic_id/subscribe', to: 'user_topics#subscribe'
-			post 'user_topics/:topic_id/unsubscribe', to: 'user_topics#unsubscribe'
 
 		end
 	end
