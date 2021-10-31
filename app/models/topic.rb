@@ -2,11 +2,12 @@ class Topic < ApplicationRecord
 
 	belongs_to :subsection
 	has_many :posts
-	
+  has_many :user_topics
+
 	after_save :broadcast_update
 
-	# after_save do
-	# 	ActionCable.server.broadcast('main_channel', type: 'update')
-	# end
+  def subscribers
+    self.user_topics.where(subscribed: true).map{ |user_topic| user_topic.user }
+  end
 
 end
