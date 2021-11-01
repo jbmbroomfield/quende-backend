@@ -9,17 +9,7 @@ class Post < ApplicationRecord
 
   after_commit do
 		ActionCable.server.broadcast("topic_#{self.topic.id}", type: 'update')
-
-    self.topic.subscribers(self.user).each do |subscriber|
-      notification = Notification.find_or_create_by(
-        user: subscriber,
-        category: 'replies',
-        object_id: self.topic.id
-      )
-      notification.number ||= 0
-      notification.number += 1
-      notification.save
-    end
+    Notification.new_post(self.topic, self.user)
   end
 
 end
