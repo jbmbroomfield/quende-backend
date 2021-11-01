@@ -9,7 +9,7 @@ class Post < ApplicationRecord
 
   after_commit do
 		ActionCable.server.broadcast("topic_#{self.topic.id}", type: 'update')
-    Notification.new_post(self.topic, self.user)
+    Notification.new_post(self.topic, self.user, self.tag)
   end
 
 end
