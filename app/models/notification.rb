@@ -3,7 +3,7 @@ class Notification < ApplicationRecord
   belongs_to :user
 
   after_commit do
-		ActionCable.server.broadcast("user_#{self.user.id}_notifications", type: 'update')
+		ActionCable.server.broadcast("notifications_user_#{self.user.id}", type: 'update')
   end
 
   def self.new_post(topic, user)
