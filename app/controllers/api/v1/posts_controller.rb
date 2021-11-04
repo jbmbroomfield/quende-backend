@@ -11,7 +11,10 @@ class Api::V1::PostsController < ApplicationController
     end
     
     def index
-        render_where(topic_id: params[:topic_id])
+        # render_where(topic_id: params[:topic_id])
+        posts = Post.where(topic_id: params[:topic_id])
+        params = {user: current_user}
+        render json: PostSerializer.new(posts, {params: {user: current_user}}).serializable_hash, status: :ok
     end
 
     private

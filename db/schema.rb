@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_01_093656) do
+ActiveRecord::Schema.define(version: 2021_11_04_060828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "flags", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.string "category"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_flags_on_post_id"
+    t.index ["user_id"], name: "index_flags_on_user_id"
+  end
 
   create_table "notifications", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -88,6 +98,8 @@ ActiveRecord::Schema.define(version: 2021_11_01_093656) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "flags", "posts"
+  add_foreign_key "flags", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "password_authentications", "users"
   add_foreign_key "posts", "topics"
