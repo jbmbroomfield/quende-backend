@@ -49,4 +49,6 @@ gem "faker", "~> 2.19"
 
 gem "figaro"
 
-gem "fast_jsonapi"
+# gem "fast_jsonapi"
+
+gem 'jsonapi-serializer'

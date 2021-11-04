@@ -1,4 +1,4 @@
 class SectionSerializer
-  include FastJsonapi::ObjectSerializer
+  include JSONAPI::Serializer
   attributes :title
 end

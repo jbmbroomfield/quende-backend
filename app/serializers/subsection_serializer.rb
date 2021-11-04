@@ -1,4 +1,4 @@
 class SubsectionSerializer
-	include FastJsonapi::ObjectSerializer
+  include JSONAPI::Serializer
 	attributes :title, :section_id
 end
