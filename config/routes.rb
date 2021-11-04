@@ -23,6 +23,11 @@ Rails.application.routes.draw do
 				resources :posts, only: [:create, :index]
 			end
 
+			resources :posts, only: [] do
+				resources :flags, only: [:create]
+				delete 'flags', to: 'flags#destroy'
+			end
+
 			get 'user_topics/:topic_id', to: 'user_topics#show'
 			post 'user_topics/:topic_id/subscribe', to: 'user_topics#subscribe'
 
