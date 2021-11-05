@@ -1,6 +1,6 @@
 class PostSerializer
   include JSONAPI::Serializer
-  attributes :user_id, :text, :tag, :topic_id, :created_at
+  attributes :user_id, :text, :tag, :topic_id, :created_at, :public_flags
 
   attribute :my_flags do |post, params|
     post.my_flags(params[:user])

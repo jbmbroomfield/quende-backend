@@ -17,4 +17,14 @@ class Post < ApplicationRecord
     self.flags.where(user: user).map { |flag| flag.category }
   end
 
+  def public_flags
+    public_flags = {}
+    ['like', 'dislike']. each do |category|
+      public_flags[category] = self.flags.where(category: category).map do |flag|
+        flag.user.username
+      end
+    end
+    public_flags
+  end
+
 end
