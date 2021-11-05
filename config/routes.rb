@@ -32,6 +32,8 @@ Rails.application.routes.draw do
 			post 'user_topics/:topic_id/subscribe', to: 'user_topics#subscribe'
 
 			resources :notifications, only: [:index, :destroy]
+
+			post '/upload_avatar', to: 'users#upload_avatar'
 			
 		end
 	end

@@ -1,4 +1,15 @@
 class UserSerializer
+  include Rails.application.routes.url_helpers
   include JSONAPI::Serializer
-  attributes :username
+  attributes :username, :get_avatar_image
+
+  def get_avatar_image
+    if object.avatar_image.attached?
+        # {
+        #   url: rails_blob_url(object.avatar_image)
+        # }
+        rails_blob_path(object.avatar_image, only_path: true)
+    end
+  end
+
 end

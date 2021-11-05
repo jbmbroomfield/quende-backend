@@ -1,6 +1,9 @@
 class Api::V1::UsersController < ApplicationController
 
     def create
+        puts ["----------------------------------------",
+            params,
+            "------------------------------------------------"]
         user = User.create(user_params)
         if user.valid?
             @token = encode_token(user_id: user.id)
@@ -26,12 +29,32 @@ class Api::V1::UsersController < ApplicationController
         end
     end
 
+    def upload_avatar
+        puts "UPLOADING AVATAR!!!!!!!!!!!!!!!!!!!!!!!"
+        user = current_user
+        user.avatar_image = params[:avatar_image]
+        user.save
+    end
+
     private
 
     def user_params
         params.require(:user).permit(
             :username,
             :email,
+            # :avatar_image,
+            password_authentication_attributes: [
+                :password,
+                :password_confirmation
+            ]
+        )
+    end
+
+    def user_params2
+        params.permit(
+            :username,
+            :email,
+            :avatar_image,
             password_authentication_attributes: [
                 :password,
                 :password_confirmation
