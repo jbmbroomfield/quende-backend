@@ -1,9 +1,6 @@
 class Api::V1::UsersController < ApplicationController
 
     def create
-        puts ["----------------------------------------",
-            params,
-            "------------------------------------------------"]
         user = User.create(user_params)
         if user.valid?
             @token = encode_token(user_id: user.id)
@@ -21,6 +18,12 @@ class Api::V1::UsersController < ApplicationController
         render_one
     end
 
+    def update
+        user = current_user
+        user.update(user_update_params)
+        render_object(user)
+    end
+
     def current
         if current_user
             render_json(current_user)
@@ -30,7 +33,6 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def upload_avatar
-        puts "UPLOADING AVATAR!!!!!!!!!!!!!!!!!!!!!!!"
         user = current_user
         user.avatar_image = params[:avatar_image]
         user.save
@@ -42,6 +44,7 @@ class Api::V1::UsersController < ApplicationController
         params.require(:user).permit(
             :username,
             :email,
+            :time_zone,
             # :avatar_image,
             password_authentication_attributes: [
                 :password,
@@ -50,11 +53,11 @@ class Api::V1::UsersController < ApplicationController
         )
     end
 
-    def user_params2
-        params.permit(
-            :username,
+    def user_update_params
+        params.require(:user).permit(
             :email,
-            :avatar_image,
+            :time_zone,
+            :page_size,
             password_authentication_attributes: [
                 :password,
                 :password_confirmation

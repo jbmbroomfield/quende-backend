@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 		namespace :v1 do
 
 			get '/current_user', to: 'users#current'
-			resources :users, only: [:create, :show, :index]
+			resources :users, only: [:create, :show, :index, :update]
 			post '/login', to: 'auth#create'
 			get '/profile', to: 'users#profile'
 
