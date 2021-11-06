@@ -1,7 +1,7 @@
 class UserSerializer
   include Rails.application.routes.url_helpers
   include JSONAPI::Serializer
-  attributes :username, :get_avatar_image
+  attributes :username, :get_avatar_image, :page_size, :time_zone
 
   def get_avatar_image
     if object.avatar_image.attached?

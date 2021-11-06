@@ -7,7 +7,7 @@ class MainChannel < ApplicationCable::Channel
     def unsubscribed
     end
 
-    def broadcast_update
+    def self.broadcast_update
         ActionCable.server.broadcast('main_channel', type: 'update')
     end
 

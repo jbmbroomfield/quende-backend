@@ -1,0 +1,1 @@
+Time::DATE_FORMATS[:std] = '%a, %d %b %Y, %I:%M:%S %p'

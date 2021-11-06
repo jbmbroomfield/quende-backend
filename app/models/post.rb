@@ -27,4 +27,10 @@ class Post < ApplicationRecord
     public_flags
   end
 
+  def created_at_s(user)
+    Time.zone = user.time_zone
+    # Time.zone = 'Pacific/Honolulu'
+    created_at.in_time_zone.to_s(:std)
+  end
+
 end
