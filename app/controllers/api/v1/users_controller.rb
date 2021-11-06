@@ -1,5 +1,7 @@
 class Api::V1::UsersController < ApplicationController
 
+    before_action :require_login, only: [:update, :current, :upload_avatar]
+
     def create
         user = User.create(user_params)
         if user.valid?
