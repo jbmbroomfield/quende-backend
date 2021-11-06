@@ -7,4 +7,8 @@ class NotificationsChannel < ApplicationCable::Channel
     def unsubscribed
     end
 
+    def self.broadcast_update(user_id)
+		ActionCable.server.broadcast("notifications_user_#{user_id}", type: 'update')
+    end
+
 end

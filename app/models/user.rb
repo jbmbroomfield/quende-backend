@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar_image
 	
-	after_save :broadcast_update
+	after_save :broadcast_main_update
 
   def get_avatar_image
     if self.avatar_image.attached?

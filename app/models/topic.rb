@@ -4,7 +4,7 @@ class Topic < ApplicationRecord
 	has_many :posts
   has_many :user_topics
 
-	after_save :broadcast_update
+	after_save :broadcast_main_update
 
   def subscribers(excluding=nil)
     self.user_topics

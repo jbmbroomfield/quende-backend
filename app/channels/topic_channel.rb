@@ -7,4 +7,8 @@ class TopicChannel < ApplicationCable::Channel
     def unsubscribed
     end
 
+    def self.broadcast_update(topic_id)
+        ActionCable.server.broadcast("topic_#{topic_id}", type: 'update')
+    end
+
 end
