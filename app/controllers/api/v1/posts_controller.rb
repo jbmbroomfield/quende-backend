@@ -6,12 +6,11 @@ class Api::V1::PostsController < ApplicationController
         post = Post.new(post_params)
         post.topic_id = params[:topic_id]
         post.user = current_user
-        # post.tag = Post.count.to_s
-        save_and_render(post)
+        post.save
+        render json: PostSerializer.new(post, params: {user: current_user}).serializable_hash, status: :created
     end
     
     def index
-        # render_where(topic_id: params[:topic_id])
         posts = Post.where(topic_id: params[:topic_id])
         params = {user: current_user}
         render json: PostSerializer.new(posts, {params: {user: current_user}}).serializable_hash, status: :ok
