@@ -18,6 +18,10 @@ class Topic < ApplicationRecord
     users.uniq.map { |user| user.username }
   end
 
+  def post_count
+    posts.count
+  end
+
   def last_post(user)
     post = posts.last
     post ? {
