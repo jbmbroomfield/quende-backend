@@ -22,11 +22,28 @@ class Topic < ApplicationRecord
     posts.count
   end
 
+  def first_poster
+    first_post = posts.first
+    poster = first_post && first_post.user
+    poster ? {
+      id: poster.id,
+      attributes: {
+        username: poster.username,
+      }
+    } : ''
+  end
+
   def last_post(user)
     post = posts.last
     post ? {
       created_at_s: post.created_at_s(user),
-      tag: post.tag
+      tag: post.tag,
+      user: {
+        id: post.user.id,
+        attributes: {
+          username: post.user.username,
+        },
+      },
     } : ''
   end
 
