@@ -11,12 +11,12 @@ class TopicChannel < ApplicationCable::Channel
         ActionCable.server.broadcast("topic_#{topic_id}", type: 'update')
     end
 
-    def self.broadcast_post_update(post)
+    def self.post_update(post)
         topic_id = post.topic.id
         ActionCable.server.broadcast(
             "topic_#{topic_id}",
             type: 'post_update',
-            post_id: post.id
+            post_id: post.id,
         )
     end
 

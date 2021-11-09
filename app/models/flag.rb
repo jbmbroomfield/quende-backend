@@ -8,7 +8,7 @@ class Flag < ApplicationRecord
   end
 
   after_commit do
-    TopicChannel.broadcast_update(topic.id)
+    TopicChannel.post_update(post)
   end
 
 end

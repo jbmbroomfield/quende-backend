@@ -3,7 +3,7 @@ class Notification < ApplicationRecord
   belongs_to :user
 
   after_commit do
-		NotificationsChannel.broadcast_update(self.user.id)
+		UserChannel.notification_update(self)
   end
 
   def self.new_post(topic, user, tag)

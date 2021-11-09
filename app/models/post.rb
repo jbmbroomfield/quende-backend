@@ -9,8 +9,8 @@ class Post < ApplicationRecord
 	end
 
   after_commit do
-    TopicChannel.broadcast_post_update(self)
-    # Notification.new_post(self.topic, self.user, self.tag)
+    TopicChannel.post_update(self)
+    Notification.new_post(self.topic, self.user, self.tag)
   end
 
   def my_flags(user)
