@@ -18,4 +18,12 @@ class Topic < ApplicationRecord
     users.uniq.map { |user| user.username }
   end
 
+  def last_post(user)
+    post = posts.last
+    post ? {
+      created_at_s: post.created_at_s(user),
+      tag: post.tag
+    } : ''
+  end
+
 end

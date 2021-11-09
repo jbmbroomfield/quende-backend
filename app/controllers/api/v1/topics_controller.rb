@@ -3,6 +3,7 @@ class Api::V1::TopicsController < ApplicationController
     def create
         topic = Topic.create(topic_params)
         topic.subsection_id = params[:subsection_id]
+        topic.save
         post_params = params.require(:post).permit(
             :text
         )
@@ -10,7 +11,7 @@ class Api::V1::TopicsController < ApplicationController
         post_params[:topic] = topic
         post = Post.new(post_params)
         post.save
-        save_and_render(topic)
+        render json: TopicSerializer.new(topic, params: {user: current_user}).serializable_hash, status: :created
     end
     
     def index
@@ -18,13 +19,8 @@ class Api::V1::TopicsController < ApplicationController
     end
 
     def show
-        topic = Topic.find_by(id: params[:id])
-        for_json = TopicSerializer.new(topic)
-        # if current_user
-        #     user_topic = UserTopic.find_or_create_by(user: current_user, topic: topic)
-        #     for_json["user_topic"] = UserTopicSerializer.new(user_topic)
-        # end
-        render json: for_json, status: :ok
+        topic = Topic.find_by(id: params[:id])   
+        render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
     end
 
     private

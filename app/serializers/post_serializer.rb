@@ -3,11 +3,6 @@ class PostSerializer
   attributes :user_id, :text, :tag, :topic_id, :public_flags
 
   attribute :created_at_s do |post, params|
-    puts [
-      "-----------------------------------",
-      params,
-      "---------------------------------------"
-    ]
     post.created_at_s(params[:user])
   end
 
