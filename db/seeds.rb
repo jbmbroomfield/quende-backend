@@ -6,6 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Faker::UniqueGenerator.clear
+
 User.create([
     {
         username: 'Jim',
@@ -36,60 +38,63 @@ User.create([
     },
 ])
 
-Section.create([
-    {title: 'First Section'},
-    {title: 'Second Section'},
-    {title: 'Third Section'},
-])
 
-Subsection.create([
-    {
-        title: 'First Subsection',
-        section_id: 1,
-    },
-    {
-        title: 'Second Subsection',
-        section_id: 1,
-    },
-    {
-        title: 'Third Subsection',
-        section_id: 2,
-    },
-    {
-        title: 'Fourth Subsection',
-        section_id: 3,
-    },
-])
 
-Topic.create([
-    {
-        title: 'First Topic',
-        subsection_id: 1,
-    },
-    {
-        title: 'Second Topic',
-        subsection_id: 1,
-    },
-    {
-        title: 'Third Topic',
-        subsection_id: 2,
-    },
-])
 
-Post.create([
-    {
-        user_id: 1,
-        topic_id: 1,
-        text: 'First Post',
-    },
-    {
-        user_id: 2,
-        topic_id: 1,
-        text: 'Second Post',
-    },
-    {
-        user_id: 2,
-        topic_id: 2,
-        text: 'Third Post',
-    },
-])
+def rand_user
+    User.create(
+        username: Faker::Superhero.unique.name,
+        email: 'email@mail.com',
+        account_level: 'user',
+        password_authentication_attributes: {
+            password: 'bob',
+            password_confirmation: 'bob',
+        },
+    )
+end
+
+def rand_post(topic)
+    Post.create(
+        topic: topic,
+        user_id: rand(User.count + 1),
+        text: Faker::Lorem.paragraph(sentence_count: 1, random_sentences_to_add: 9),
+    )
+end
+
+def rand_topic(subsection)
+    topic = Topic.create(
+        title: Faker::Lorem.sentence(word_count: 1, random_words_to_add: 4),
+        subsection: subsection,
+    )
+    20.times do
+        rand_post(topic)
+    end
+end
+
+def rand_subsection(section)
+    subsection = Subsection.create(title: Faker::App.name, section: section)
+    5.times do
+        rand_topic(subsection)
+    end
+end
+
+def rand_section
+    section = Section.create(title: Faker::ProgrammingLanguage.unique.name)
+    4.times do
+        rand_subsection(section)
+    end
+end
+
+7.times do
+    rand_user
+end
+
+
+3.times do
+    rand_section
+end
+
+topic = Topic.first
+180.times do
+    rand_post(topic)
+end
