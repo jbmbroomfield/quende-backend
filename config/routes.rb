@@ -23,7 +23,7 @@ Rails.application.routes.draw do
 				resources :posts, only: [:create, :index]
 			end
 
-			resources :posts, only: [] do
+			resources :posts, only: [:show] do
 				resources :flags, only: [:create]
 				delete 'flags', to: 'flags#destroy'
 			end

@@ -16,6 +16,10 @@ class Api::V1::PostsController < ApplicationController
         render json: PostSerializer.new(posts, {params: {user: current_user}}).serializable_hash, status: :ok
     end
 
+    def show
+        render_one
+    end
+
     private
 
     def post_params

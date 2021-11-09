@@ -9,8 +9,8 @@ class Post < ApplicationRecord
 	end
 
   after_commit do
-    TopicChannel.broadcast_update(self.topic.id)
-    Notification.new_post(self.topic, self.user, self.tag)
+    TopicChannel.broadcast_post_update(self)
+    # Notification.new_post(self.topic, self.user, self.tag)
   end
 
   def my_flags(user)
@@ -28,7 +28,7 @@ class Post < ApplicationRecord
   end
 
   def created_at_s(user)
-    Time.zone = user.time_zone
+    Time.zone = user ? user.time_zone : 'UTC'
     # Time.zone = 'Pacific/Honolulu'
     created_at.in_time_zone.to_s(:std)
   end
