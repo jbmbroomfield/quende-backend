@@ -12,6 +12,10 @@ class Api::V1::SubsectionsController < ApplicationController
         render_all
     end
 
+    def show
+        render_one
+    end
+
     private
 
     def subsection_params
