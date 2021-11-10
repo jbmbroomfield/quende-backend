@@ -40,6 +40,7 @@ class Topic < ApplicationRecord
   def last_post(user)
     post = posts.last
     post ? {
+      created_at_i: post.created_at.to_i,
       created_at_s: post.created_at_s(user),
       tag: post.tag,
       user: {
