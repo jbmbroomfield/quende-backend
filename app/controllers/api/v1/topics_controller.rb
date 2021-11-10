@@ -15,11 +15,12 @@ class Api::V1::TopicsController < ApplicationController
     end
     
     def index
-        render_where(subsection_id: params[:subsection_id])
+        topics = Topic.where(subsection_id: params[:subsection_id])
+        render json: TopicSerializer.new(topics ,{params: {user: current_user}}).serializable_hash, status: :ok
     end
 
     def show
-        topic = Topic.find_by(id: params[:id])   
+        topic = Topic.find_by(id: params[:id])
         render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
     end
 
