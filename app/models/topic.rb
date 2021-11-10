@@ -1,4 +1,5 @@
 class Topic < ApplicationRecord
+  include LastPostHelper
 
 	belongs_to :subsection
 	has_many :posts
@@ -34,21 +35,6 @@ class Topic < ApplicationRecord
       attributes: {
         username: poster.username,
       }
-    } : ''
-  end
-
-  def last_post(user)
-    post = posts.last
-    post ? {
-      created_at_i: post.created_at.to_i,
-      created_at_s: post.created_at_s(user),
-      tag: post.tag,
-      user: {
-        id: post.user.id,
-        attributes: {
-          username: post.user.username,
-        },
-      },
     } : ''
   end
 

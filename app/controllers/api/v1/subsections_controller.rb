@@ -5,15 +5,18 @@ class Api::V1::SubsectionsController < ApplicationController
     def create
         subsection = Subsection.new(subsection_params)
         subsection.section_id = params[:section_id]
-        save_and_render(subsection)
+        subsection.save
+        render json: SubsectionSerializer.new(subsection, params: {user: current_user}).serializable_hash, status: :created
     end
 
     def index
-        render_all
+        subsections = Subsection.all
+        render json: SubsectionSerializer.new(subsections ,{params: {user: current_user}}).serializable_hash, status: :ok
     end
 
     def show
-        render_one
+        subsection = Subsection.find_by(id: params[:id])
+        render json: SubsectionSerializer.new(subsection, {params: {user: current_user}}).serializable_hash, status: :ok
     end
 
     private
