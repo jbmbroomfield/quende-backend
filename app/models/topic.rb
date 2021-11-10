@@ -23,7 +23,7 @@ class Topic < ApplicationRecord
   end
 
   def post_count
-    posts.count
+    posts.count - 1
   end
 
   def first_poster
