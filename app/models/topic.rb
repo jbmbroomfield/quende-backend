@@ -5,7 +5,11 @@ class Topic < ApplicationRecord
   has_many :users, through: :posts
   has_many :user_topics
 
-	after_save :broadcast_main_update
+	# after_save :broadcast_main_update
+
+  after_commit do
+    SubsectionChannel.topic_update(self)
+  end
 
   def subscribers(excluding=nil)
     self.user_topics

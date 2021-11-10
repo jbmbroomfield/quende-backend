@@ -10,6 +10,7 @@ class Post < ApplicationRecord
 
   after_commit do
     TopicChannel.post_update(self)
+    SubsectionChannel.topic_update(self.topic)
     Notification.new_post(self.topic, self.user, self.tag)
   end
 
