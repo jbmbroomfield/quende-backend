@@ -8,6 +8,22 @@ class Topic < ApplicationRecord
 
 	# after_save :broadcast_main_update
 
+  before_create do
+    initial_slug = title.gsub(/_/, '-').parameterize
+    slug = initial_slug
+    number = 1
+    loop do
+      topics = Topic.where(subsection: self.subsection, slug: slug)
+      if topics.count > 0
+        number += 1
+        slug = initial_slug + "-#{number}"
+      else
+        break
+      end
+    end
+    self.slug = slug
+  end
+
   after_commit do
     SubsectionChannel.topic_update(self)
   end

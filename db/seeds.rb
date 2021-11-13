@@ -66,21 +66,21 @@ def rand_topic(subsection)
         title: Faker::Lorem.sentence(word_count: 1, random_words_to_add: 4),
         subsection: subsection,
     )
-    20.times do
+    10.times do
         rand_post(topic)
     end
 end
 
 def rand_subsection(section)
     subsection = Subsection.create(title: Faker::App.name, section: section)
-    5.times do
+    3.times do
         rand_topic(subsection)
     end
 end
 
 def rand_section
     section = Section.create(title: Faker::ProgrammingLanguage.unique.name)
-    4.times do
+    3.times do
         rand_subsection(section)
     end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_06_050227) do
+ActiveRecord::Schema.define(version: 2021_11_13_061940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2021_11_06_050227) do
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
     t.index ["section_id"], name: "index_subsections_on_section_id"
   end
 
@@ -103,6 +104,7 @@ ActiveRecord::Schema.define(version: 2021_11_06_050227) do
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
     t.index ["subsection_id"], name: "index_topics_on_subsection_id"
   end
 
