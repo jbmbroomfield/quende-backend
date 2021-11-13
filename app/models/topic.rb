@@ -6,7 +6,12 @@ class Topic < ApplicationRecord
   has_many :users, through: :posts
   has_many :user_topics
 
+
 	# after_save :broadcast_main_update
+
+  def subsection_slug
+    subsection.slug
+  end
 
   before_create do
     initial_slug = title.gsub(/_/, '-').parameterize

@@ -19,6 +19,8 @@ module LastPostHelper
         type: 'topic',
         attributes: {
           title: topic.title,
+          slug: topic.slug,
+          subsection_id: topic.subsection.id,
         }
       },
       created_at_i: post.created_at.to_i,

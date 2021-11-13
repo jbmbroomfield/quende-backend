@@ -19,9 +19,11 @@ Rails.application.routes.draw do
 				resources :topics, only: [:create, :index]
 			end
 
-			resources :topics, only: [:show] do
+			resources :topics, only: [] do
 				resources :posts, only: [:create, :index]
 			end
+
+			get 'forum/:subsection_slug/:topic_slug', to: 'topics#show'
 
 			resources :posts, only: [:show] do
 				resources :flags, only: [:create]

@@ -20,7 +20,10 @@ class Api::V1::TopicsController < ApplicationController
     end
 
     def show
-        topic = Topic.find_by(id: params[:id])
+        # topic = Topic.find_by(id: params[:id])
+        # subsection = Subsection.
+        subsection = Subsection.find_by(slug: params[:subsection_slug])
+        topic = Topic.find_by(subsection: subsection, slug: params[:topic_slug])
         render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
     end
 
