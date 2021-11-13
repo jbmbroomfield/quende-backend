@@ -15,7 +15,7 @@ class Api::V1::SubsectionsController < ApplicationController
     end
 
     def show
-        subsection = Subsection.find_by(id: params[:id])
+        subsection = Subsection.find_by(slug: params[:subsection_slug])
         render json: SubsectionSerializer.new(subsection, {params: {user: current_user}}).serializable_hash, status: :ok
     end
 

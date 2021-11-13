@@ -7,7 +7,9 @@ Rails.application.routes.draw do
 		namespace :v1 do
 
 			get '/current_user', to: 'users#current'
-			resources :users, only: [:create, :show, :index, :update]
+			patch '/current_user', to: 'users#update'
+			resources :users, only: [:create, :index]
+			get 'users/:user_slug', to: 'users#show'
 			post '/login', to: 'auth#create'
 			get '/profile', to: 'users#profile'
 
@@ -15,9 +17,11 @@ Rails.application.routes.draw do
 				resources :subsections, only: [:create]
 			end
 
-			resources :subsections, only: [:index, :show] do 
+			resources :subsections, only: [:index] do 
 				resources :topics, only: [:create, :index]
 			end
+
+			get 'forum/:subsection_slug', to: 'subsections#show'
 
 			resources :topics, only: [] do
 				resources :posts, only: [:create, :index]

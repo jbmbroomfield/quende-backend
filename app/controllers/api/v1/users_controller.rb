@@ -17,7 +17,8 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def show
-        render_one
+        user = User.find_by(slug: params[:user_slug])
+        render_object(user)
     end
 
     def update

@@ -11,6 +11,25 @@ class User < ApplicationRecord
 	
 	after_save :broadcast_main_update
 
+  before_create do
+    if !self.slug
+      initial_slug = username.gsub(/_/, '-').parameterize
+      slug = initial_slug
+      number = 1
+      loop do
+        users = User.where(slug: slug)
+        if users.count > 0
+          number += 1
+          slug = initial_slug + "-#{number}"
+        else
+          break
+        end
+      end
+      self.slug = slug
+    end
+  end
+
+
   def get_avatar_image
     if self.avatar_image.attached?
         # {
