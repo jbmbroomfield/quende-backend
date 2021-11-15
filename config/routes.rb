@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 				resources :posts, only: [:create, :index]
 			end
 
+			get 'forum/:subsection_slug/topics', to: 'topics#index'
 			get 'forum/:subsection_slug/:topic_slug', to: 'topics#show'
 
 			resources :posts, only: [:show] do
