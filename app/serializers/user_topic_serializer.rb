@@ -1,4 +1,4 @@
 class UserTopicSerializer
   include JSONAPI::Serializer
-  attributes :user_id, :topic_id, :subscribed
+  attributes :user_id, :topic_slug, :subscribed
 end

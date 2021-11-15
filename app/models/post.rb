@@ -15,6 +15,10 @@ class Post < ApplicationRecord
     Notification.new_post(self.topic, self.user, self.tag)
   end
 
+  def topic_slug
+    topic.slug
+  end
+
   def my_flags(user)
     self.flags.where(user: user).map { |flag| flag.category }
   end
