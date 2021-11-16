@@ -1,16 +1,19 @@
 class Api::V1::TopicsController < ApplicationController
 
+    before_action :require_login, only: [:create]
+
     def create
         topic = Topic.create(topic_params)
         topic.subsection_id = params[:subsection_id]
+        topic.user = current_user
         topic.save
-        post_params = params.require(:post).permit(
-            :text
-        )
-        post_params[:user] = current_user
-        post_params[:topic] = topic
-        post = Post.new(post_params)
-        post.save
+        # post_params = params.require(:post).permit(
+        #     :text
+        # )
+        # post_params[:user] = current_user
+        # post_params[:topic] = topic
+        # post = Post.new(post_params)
+        # post.save
         render json: TopicSerializer.new(topic, params: {user: current_user}).serializable_hash, status: :created
     end
     

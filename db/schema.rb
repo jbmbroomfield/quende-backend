@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_16_061339) do
+ActiveRecord::Schema.define(version: 2021_11_16_081402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,7 +108,9 @@ ActiveRecord::Schema.define(version: 2021_11_16_061339) do
     t.string "who_can_view"
     t.string "who_can_post"
     t.string "password"
+    t.bigint "user_id"
     t.index ["subsection_id"], name: "index_topics_on_subsection_id"
+    t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
   create_table "user_topics", force: :cascade do |t|
@@ -145,6 +147,7 @@ ActiveRecord::Schema.define(version: 2021_11_16_061339) do
   add_foreign_key "posts", "users"
   add_foreign_key "subsections", "sections"
   add_foreign_key "topics", "subsections"
+  add_foreign_key "topics", "users"
   add_foreign_key "user_topics", "topics"
   add_foreign_key "user_topics", "users"
 end

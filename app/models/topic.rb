@@ -2,6 +2,7 @@ class Topic < ApplicationRecord
   include LastPostHelper
 
 	belongs_to :subsection
+  belongs_to :user
 	has_many :posts
   has_many :users, through: :posts
   has_many :user_topics
@@ -11,6 +12,10 @@ class Topic < ApplicationRecord
 
   def subsection_slug
     subsection.slug
+  end
+
+  def user_slug
+    user.slug
   end
 
   before_create do
