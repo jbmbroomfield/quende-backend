@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_13_234551) do
+ActiveRecord::Schema.define(version: 2021_11_16_061339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,6 +105,9 @@ ActiveRecord::Schema.define(version: 2021_11_13_234551) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "slug"
+    t.string "who_can_view"
+    t.string "who_can_post"
+    t.string "password"
     t.index ["subsection_id"], name: "index_topics_on_subsection_id"
   end
 
@@ -115,6 +118,7 @@ ActiveRecord::Schema.define(version: 2021_11_13_234551) do
     t.boolean "subscribed", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status"
     t.index ["topic_id"], name: "index_user_topics_on_topic_id"
     t.index ["user_id"], name: "index_user_topics_on_user_id"
   end

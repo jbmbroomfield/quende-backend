@@ -59,4 +59,55 @@ class Topic < ApplicationRecord
     } : ''
   end
 
+  def can_view(user)
+    case who_can_view
+    when 'all'
+      true
+    when 'users'
+      !!user
+    else
+      user_topic = self.user_topics.find_by(user: user)
+      user_topic && ['viewer', 'poster'].include?(user_topic.status)
+    end
+  end
+
+  def can_post(user)
+    case who_can_post
+    when 'all'
+      can_view(user)
+    when 'users'
+      !!user && can_view(user)
+    else
+      user_topic = self.user_topics.find_by(user: user)
+      user_topic && user_topic.status == 'poster'
+    end
+  end
+
+  def add_viewer(user)
+    user_topic = self.user_topics.find_or_create_by(user: user)
+    if !['viewer', 'poster'].include?(user_topic.status)
+      user_topic.status = 'viewer'
+      user_topic.save
+    end
+  end
+
+  def add_poster(user, password = nil)
+    return if self.password && self.password != password
+    user_topic = self.user_topics.find_or_create_by(user: user)
+    if user_topic.status != 'poster'
+      user_topic.status = 'poster'
+      user_topic.save
+    end
+  end
+
+  def viewers
+    user_topics = self.user_topics.filter { |user_topic| ['viewer', 'poster'].include?(user_topic.status)}
+    user_topics.map { |user_topic| user_topic.user }
+  end
+
+  def posters
+    user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' }
+    user_topics.map { |user_topic| user_topic.user }
+  end
+
 end
