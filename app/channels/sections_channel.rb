@@ -4,11 +4,14 @@ class SectionsChannel < ApplicationCable::Channel
     stream_from 'sections'
   end
 
+  def self.broadcast(**params)
+    ActionCable.server.broadcast('sections', **params)
+  end
+
   def self.subsection_update(subsection)
-    ActionCable.server.broadcast(
-      'sections',
+    self.broadcast(
       type: 'subsection_update',
-      subsection_id: subsection.id
+      subsection_slug: subsection.slug
     )
   end
   

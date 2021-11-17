@@ -1,21 +1,24 @@
 class TopicChannel < ApplicationCable::Channel
 
   def subscribed
-    stream_from "topic_#{params[:topic_id]}"
+    stream_from "topic_#{params[:topic_slug]}"
+  end
+
+  def self.broadcast(topic, **params)
+    ActionCable.server.broadcast("topic_#{topic.slug}", **params)
   end
 
   def self.post_update(post)
-    topic_id = post.topic.id
-    ActionCable.server.broadcast(
-      "topic_#{topic_id}",
+    self.broadcast(
+      post.topic,
       type: 'post_update',
       post_id: post.id,
     )
   end
 
   def self.topic_update(topic)
-    ActionCable.server.broadcast(
-      "topic_#{topic.id}",
+    self.broadcast(
+      topic,
       type: 'topic_update',
     )
   end

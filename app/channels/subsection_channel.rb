@@ -1,24 +1,24 @@
 class SubsectionChannel < ApplicationCable::Channel
 
     def subscribed
-        stream_from "subsection_#{params[:subsection_id]}"
+        stream_from "subsection_#{params[:subsection_slug]}"
     end
 
-    def self.broadcast(subsection_id, **params)
-        ActionCable.server.broadcast("subsection_#{subsection_id}", **params)
+    def self.broadcast(subsection, **params)
+        ActionCable.server.broadcast("subsection_#{subsection.slug}", **params)
     end
 
     def self.topic_update(topic)
         self.broadcast(
-            topic.subsection.id,
+            topic.subsection,
             type: 'topic_update',
-            topic_id: topic.id,
+            topic_slug: topic.slug,
         )
     end
 
     def self.subsection_update(subsection)
         self.broadcast(
-            subsection.id,
+            subsection,
             type: 'subsection_update',
         )
     end
