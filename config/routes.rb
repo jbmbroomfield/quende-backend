@@ -23,14 +23,13 @@ Rails.application.routes.draw do
 
 			get 'forum/:subsection_slug', to: 'subsections#show'
 
-			resources :topics, only: [] do
-				resources :posts, only: [:create, :index]
-			end
-
 			get 'forum/:subsection_slug/topics', to: 'topics#index'
 			post 'forum/:subsection_slug/topics', to: 'topics#create'
 			get 'forum/:subsection_slug/:topic_slug', to: 'topics#show'
 			patch 'forum/:subsection_slug/:topic_slug', to: 'topics#update'
+
+			post 'forum/:subsection_slug/:topic_slug/posts', to: 'posts#create'
+			get 'forum/:subsection_slug/:topic_slug/posts', to: 'posts#index'
 
 			resources :posts, only: [:show] do
 				resources :flags, only: [:create]
