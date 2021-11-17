@@ -8,7 +8,12 @@ class Topic < ApplicationRecord
   has_many :user_topics
 
 
-	# after_save :broadcast_main_update
+
+  after_commit do
+    TopicChannel.topic_update(self)
+    SubsectionChannel.topic_update(self)
+    SectionsChannel.subsection_update(self.subsection)
+  end
 
   def subsection_slug
     subsection.slug
@@ -65,6 +70,14 @@ class Topic < ApplicationRecord
   end
 
   def can_view(user)
+    if status === 'unpublished'
+      user === self.user
+    else
+      can_view_published(user)
+    end
+  end
+
+  def can_view_published(user)
     case who_can_view
     when 'all'
       true
@@ -77,6 +90,14 @@ class Topic < ApplicationRecord
   end
 
   def can_post(user)
+    if status === 'unpublished'
+      user === self.user
+    else
+      can_post_published(user)
+    end
+  end
+
+  def can_post_published(user)
     case who_can_post
     when 'all'
       can_view(user)

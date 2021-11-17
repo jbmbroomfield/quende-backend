@@ -13,4 +13,11 @@ class TopicChannel < ApplicationCable::Channel
     )
   end
 
+  def self.topic_update(topic)
+    ActionCable.server.broadcast(
+      "topic_#{topic.id}",
+      type: 'topic_update',
+    )
+  end
+
 end

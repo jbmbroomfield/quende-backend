@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :posts
   has_many :notifications
   has_many :flags
+  has_many :topics
   has_one :password_authentication
   accepts_nested_attributes_for :password_authentication
 

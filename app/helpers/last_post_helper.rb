@@ -5,13 +5,37 @@ module LastPostHelper
     post ? {
       id: post.id,
       type: 'post',
-      attributes: attributes(post, current_user),
-    } : ''
+      attributes: get_attributes(post, current_user),
+    } : {
+      id: nil,
+      type: 'post',
+      attributes: {
+        topic: {
+          id: self.id,
+          type: 'topic',
+          attributes: {
+            title: self.title,
+            slug: self.slug,
+            subsection_id: self.subsection.id,
+          }
+        },
+        created_at_i: self.created_at.to_i,
+        created_at_s: '',
+        tag: nil,
+        user: {
+          id: self.user.id,
+          type: 'user',
+          attributes: {
+            username: self.user.username,
+          },
+      },
+      }
+    }
   end
 
   private
 
-  def attributes(post, current_user)
+  def get_attributes(post, current_user)
     topic = post.topic
     {
       topic: {

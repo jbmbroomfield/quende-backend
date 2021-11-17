@@ -1,12 +1,16 @@
 class Api::V1::TopicsController < ApplicationController
 
-    before_action :require_login, only: [:create]
+    before_action :require_login, only: [:create, :update]
 
     def create
         topic = Topic.create(topic_params)
-        topic.subsection_id = params[:subsection_id]
+        topic.subsection = Subsection.find_by(slug: params[:subsection_slug])
+        topic.status = 'unpublished'
+        topic.who_can_view = 'all'
+        topic.who_can_post = 'users'
         topic.user = current_user
         topic.save
+        UserTopic.create(user: current_user, topic: topic, status: 'poster')
         # post_params = params.require(:post).permit(
         #     :text
         # )
@@ -19,14 +23,29 @@ class Api::V1::TopicsController < ApplicationController
     
     def index
         subsection = Subsection.find_by(slug: params[:subsection_slug])
-        topics = subsection.topics
+        topics = subsection.topics.filter { |topic| topic.can_view(current_user) }
         render json: TopicSerializer.new(topics ,{params: {user: current_user}}).serializable_hash, status: :ok
     end
 
     def show
         subsection = Subsection.find_by(slug: params[:subsection_slug])
         topic = Topic.find_by(subsection: subsection, slug: params[:topic_slug])
-        render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
+        if topic.can_view(current_user)
+            render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
+        else
+            render json: { error: "topic not found" }, status: :not_acceptable
+        end
+    end
+
+    def update
+        subsection = Subsection.find_by(slug: params[:subsection_slug])
+        topic = Topic.find_by(subsection: subsection, slug: params[:topic_slug])
+        if topic.user === current_user
+            topic.update(topic_params)
+            render_object(topic)
+        else
+            render json: { error: "not authorized" }, status: :not_acceptable
+        end
     end
 
     private
@@ -34,6 +53,8 @@ class Api::V1::TopicsController < ApplicationController
     def topic_params
         params.require(:topic).permit(
             :title,
+            :who_can_view,
+            :who_can_post,
         )
     end
 

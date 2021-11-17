@@ -56,15 +56,19 @@ end
 def rand_post(topic)
     Post.create(
         topic: topic,
-        user_id: rand(User.count + 1),
+        user_id: rand(User.count) + 1,
         text: Faker::Lorem.paragraph(sentence_count: 1, random_sentences_to_add: 9),
     )
 end
 
 def rand_topic(subsection)
+    user_id = rand(User.count) + 1
     topic = Topic.create(
         title: Faker::Lorem.sentence(word_count: 1, random_words_to_add: 4),
         subsection: subsection,
+        user_id: rand(User.count) + 1,
+        who_can_view: 'all',
+        who_can_post: 'users',
     )
     10.times do
         rand_post(topic)
