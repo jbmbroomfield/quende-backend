@@ -9,6 +9,7 @@ class MainChannel < ApplicationCable::Channel
 
     def self.broadcast(**params)
         ActionCable.server.broadcast('main_channel', **params)
+    end
 
     def self.broadcast_update
         self.broadcast(type: 'update')

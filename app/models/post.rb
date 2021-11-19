@@ -13,6 +13,7 @@ class Post < ApplicationRecord
     SubsectionChannel.topic_update(self.topic)
     SectionsChannel.subsection_update(self.topic.subsection)
     Notification.new_post(self.topic, self.user, self.tag)
+    topic.publish
   end
 
   def topic_slug

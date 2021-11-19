@@ -1,6 +1,8 @@
 class Api::V1::PostsController < ApplicationController
 
   before_action :require_login, only: [:create]
+  before_action :require_poster, only: [:create]
+  before_action :require_viewer, only: [:index, :show]
 
   def create
     post = Post.new(post_params)
@@ -27,14 +29,6 @@ class Api::V1::PostsController < ApplicationController
       :user_id,
       :text
     )
-  end
-
-  def subsection
-    Subsection.find_by(slug: params[:subsection_slug])
-  end
-
-  def topic
-    Topic.find_by(subsection: subsection, slug: params[:topic_slug])
   end
 
 end

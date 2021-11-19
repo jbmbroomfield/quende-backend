@@ -28,6 +28,9 @@ Rails.application.routes.draw do
 			get 'forum/:subsection_slug/:topic_slug', to: 'topics#show'
 			patch 'forum/:subsection_slug/:topic_slug', to: 'topics#update'
 
+			patch 'forum/:subsection_slug/:topic_slug/add-viewer', to: 'topics#add_viewer'
+			patch 'forum/:subsection_slug/:topic_slug/add-poster', to: 'topics#add_poster'
+
 			post 'forum/:subsection_slug/:topic_slug/posts', to: 'posts#create'
 			get 'forum/:subsection_slug/:topic_slug/posts', to: 'posts#index'
 

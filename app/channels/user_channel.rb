@@ -13,7 +13,7 @@ class UserChannel < ApplicationCable::Channel
 
     def self.notification_update(notification)
       self.broadcast(
-        notification.user
+        notification.user,
         type: 'notification_update',
         notification_id: notification.id,
       )

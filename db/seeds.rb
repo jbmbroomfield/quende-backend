@@ -69,6 +69,7 @@ def rand_topic(subsection)
         user_id: rand(User.count) + 1,
         who_can_view: 'all',
         who_can_post: 'users',
+        status: 'published',
     )
     10.times do
         rand_post(topic)

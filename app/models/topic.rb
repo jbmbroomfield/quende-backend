@@ -7,8 +7,6 @@ class Topic < ApplicationRecord
   has_many :users, through: :posts
   has_many :user_topics
 
-
-
   after_commit do
     TopicChannel.topic_update(self)
     SubsectionChannel.topic_update(self)
@@ -24,6 +22,14 @@ class Topic < ApplicationRecord
   end
 
   before_create do
+    self.slug = title_slug
+  end
+
+  after_commit do
+    SubsectionChannel.topic_update(self)
+  end
+
+  def title_slug
     initial_slug = title.gsub(/_/, '-').parameterize
     slug = initial_slug
     number = 1
@@ -36,11 +42,25 @@ class Topic < ApplicationRecord
         break
       end
     end
-    self.slug = slug
+    slug
   end
 
-  after_commit do
-    SubsectionChannel.topic_update(self)
+  def random_slug
+    o = [('a'..'z'), ('A'..'Z'), (0..9)].map(&:to_a).flatten
+    slug = (0...12).map { o[rand(o.length)] }.join
+    Topic.where(slug: slug).count > 0 ? random_slug : slug
+  end
+
+  def publish
+    if self.status === 'unpublished'
+      self.status = 'published'
+      if !['all', 'users'].include?(self.who_can_view)
+        self.slug = random_slug
+      else
+        self.slug = title_slug
+      end
+      self.save
+    end
   end
 
   def subscribers(excluding=nil)
@@ -48,10 +68,6 @@ class Topic < ApplicationRecord
     .where(subscribed: true)
     .where.not(user: excluding)
     .map{ |user_topic| user_topic.user }
-  end
-
-  def posters
-    users.uniq.map { |user| user.username }
   end
 
   def post_count
@@ -69,21 +85,27 @@ class Topic < ApplicationRecord
     } : ''
   end
 
-  def can_view(user)
+  def can_view(user, url = false)
     if status === 'unpublished'
       user === self.user
     else
-      can_view_published(user)
+      can_view_published(user, url)
     end
   end
 
-  def can_view_published(user)
+  def can_view_published(user, url)
     case who_can_view
     when 'all'
       true
     when 'users'
       !!user
     else
+      if url
+        if who_can_view == 'url_all' || (who_can_view == 'url' && !!user)
+          self.add_viewer(user)
+          return true
+        end
+      end
       user_topic = self.user_topics.find_by(user: user)
       user_topic && ['viewer', 'poster'].include?(user_topic.status)
     end
@@ -131,9 +153,32 @@ class Topic < ApplicationRecord
     user_topics.map { |user_topic| user_topic.user }
   end
 
+  def viewers_serialized
+    viewers.map { |viewer| user_serialied(viewer) }
+  end
+
   def posters
-    user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' }
-    user_topics.map { |user_topic| user_topic.user }
+    if ['users', 'all'].include?(who_can_post)
+      users.uniq
+    else
+      user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' }
+      user_topics.map { |user_topic| user_topic.user }
+    end
+  end
+
+  def posters_serialized
+    posters.map { |poster| user_serialied(poster) }
+  end
+
+  def user_serialied(user)
+    {
+      id: user.id,
+      type: 'user',
+      attributes: {
+        username: user.username,
+        slug: user.slug
+      }
+    }
   end
 
 end
