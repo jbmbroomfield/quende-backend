@@ -48,6 +48,7 @@ class Api::V1::TopicsController < ApplicationController
       viewer = User.find_by(slug: params[:viewer_slug])
       topic.add_viewer(viewer)
     end
+    Notification.user_added_to_topic(topic, viewer, 'viewer')
     render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
   end
 
@@ -56,6 +57,7 @@ class Api::V1::TopicsController < ApplicationController
       poster = User.find_by(slug: params[:poster_slug])
       topic.add_poster(poster)
     end
+    Notification.user_added_to_topic(topic, poster, 'poster')
     render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
   end
 
