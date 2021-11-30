@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_26_224356) do
+ActiveRecord::Schema.define(version: 2021_11_30_004649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 2021_11_26_224356) do
     t.string "who_can_post"
     t.string "password"
     t.bigint "user_id"
+    t.string "guest_access"
     t.index ["subsection_id"], name: "index_topics_on_subsection_id"
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
