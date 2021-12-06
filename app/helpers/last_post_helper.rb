@@ -37,6 +37,7 @@ module LastPostHelper
 
   def get_attributes(post, current_user)
     topic = post.topic
+    user = post.user
     {
       topic: {
         id: topic.id,
@@ -50,12 +51,18 @@ module LastPostHelper
       created_at_i: post.created_at.to_i,
       created_at_s: post.created_at_s(current_user),
       tag: post.tag,
-      user: {
-        id: post.user.id,
+      user: user ? {
+        id: user.id,
         type: 'user',
         attributes: {
-          username: post.user.username,
-        },
+          username: user.username,
+        }
+      } : {
+        id: 'none',
+        type: 'guest',
+        attributes: {
+          username: post.guest_name,
+        }
       },
     }
   end

@@ -85,53 +85,54 @@ class Topic < ApplicationRecord
     } : ''
   end
 
-  def can_view(user, url = false)
-    if status === 'unpublished'
-      user === self.user
+  def url
+    "forum/#{subsection.slug}/#{slug}"
+  end
+
+  def can_view(user, url = nil)
+    if status == 'unpublished'
+      user == self.user
     else
       can_view_published(user, url)
     end
   end
 
   def can_view_published(user, url)
-    case who_can_view
-    when 'all'
-      true
-    when 'users'
-      !!user
-    else
-      if url
-        if who_can_view == 'url_all' || (who_can_view == 'url' && !!user)
-          self.add_viewer(user)
-          return true
-        end
-      end
-      user_topic = self.user_topics.find_by(user: user)
-      user_topic && ['viewer', 'poster'].include?(user_topic.status)
+    if !guest_access
+      return false if !user || user.account_level == 'guest'
     end
+    return true if who_can_view == 'anyone'
+    return true if viewers.include?(user)
+    if who_can_view == 'url' && url && url == self.url
+      add_viewer(user)
+      return true
+    end
+    false
   end
 
-  def can_post(user)
+  def can_post(user, password = nil)
     if status === 'unpublished'
       user === self.user
     else
-      can_post_published(user)
+      can_post_published(user, password)
     end
   end
 
-  def can_post_published(user)
-    case who_can_post
-    when 'all'
-      can_view(user)
-    when 'users'
-      !!user && can_view(user)
-    else
-      user_topic = self.user_topics.find_by(user: user)
-      user_topic && user_topic.status == 'poster'
+  def can_post_published(user, password)
+    if guest_access != 'post'
+      return false if !user || user.account_level == 'guest'
     end
+    return true if who_can_post == 'anyone'
+    return true if posters.include?(user)
+    if who_can_post == 'password' && self.password && self.password == password
+      add_poster(user)
+      return true
+    end
+    false
   end
 
   def add_viewer(user)
+    return if !user
     user_topic = self.user_topics.find_or_create_by(user: user)
     if !['viewer', 'poster'].include?(user_topic.status)
       user_topic.status = 'viewer'
@@ -139,8 +140,8 @@ class Topic < ApplicationRecord
     end
   end
 
-  def add_poster(user, password = nil)
-    return if self.password && self.password != password
+  def add_poster(user)
+    return if !user
     user_topic = self.user_topics.find_or_create_by(user: user)
     if user_topic.status != 'poster'
       user_topic.status = 'poster'

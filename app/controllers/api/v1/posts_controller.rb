@@ -1,6 +1,6 @@
 class Api::V1::PostsController < ApplicationController
 
-  before_action :require_login, only: [:create]
+  # before_action :require_login, only: [:create]
   before_action :require_poster, only: [:create]
   before_action :require_viewer, only: [:index, :show]
 
@@ -14,7 +14,6 @@ class Api::V1::PostsController < ApplicationController
   
   def index
     posts = Post.where(topic: topic)
-    params = {user: current_user}
     render json: PostSerializer.new(posts, {params: {user: current_user}}).serializable_hash, status: :ok
   end
 
@@ -27,7 +26,8 @@ class Api::V1::PostsController < ApplicationController
   def post_params
     params.require(:post).permit(
       :user_id,
-      :text
+      :text,
+      :guest_name,
     )
   end
 

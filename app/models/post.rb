@@ -1,6 +1,6 @@
 class Post < ApplicationRecord
 	
-	belongs_to :user
+	belongs_to :user, optional: true
 	belongs_to :topic
 	has_many :flags
 
@@ -17,7 +17,7 @@ class Post < ApplicationRecord
   end
 
   def topic_slug
-    topic.slug
+    topic ? topic.slug : nil
   end
 
   def my_flags(user)
@@ -37,7 +37,7 @@ class Post < ApplicationRecord
   def created_at_s(user)
     Time.zone = user ? user.time_zone : 'UTC'
     # Time.zone = 'Pacific/Honolulu'
-    created_at.in_time_zone.to_s(:std)
+    created_at && created_at.in_time_zone.to_s(:std)
   end
 
 end

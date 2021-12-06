@@ -10,11 +10,9 @@ class User < ApplicationRecord
 
   has_one_attached :avatar_image
 	
-	after_save :broadcast_main_update
-
   before_create do
     if !self.slug
-      initial_slug = username.gsub(/_/, '-').parameterize
+      initial_slug = username ? username.gsub(/_/, '-').parameterize : 'guest'
       slug = initial_slug
       number = 1
       loop do
@@ -27,6 +25,12 @@ class User < ApplicationRecord
         end
       end
       self.slug = slug
+    end
+  end
+
+  after_save do
+    if self.account_level != 'guest'
+      MainChannel.broadcast_update
     end
   end
 

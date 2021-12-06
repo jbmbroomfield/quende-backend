@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
 
-    before_action :require_login, only: [:update, :current, :upload_avatar]
+    before_action :require_login, only: [:update, :upload_avatar]
 
     def create
         user = User.create(user_params)
@@ -31,7 +31,9 @@ class Api::V1::UsersController < ApplicationController
         if current_user
             render_json(current_user)
         else
-            render json: { error: "user not found" }, status: :not_acceptable
+            user = User.create(account_level: 'guest')
+            token = encode_token({ user_id: user.id })
+            render json: { user: UserSerializer.new(user), jwt: token }, status: :accepted
         end
     end
 

@@ -29,7 +29,7 @@ class ApplicationController < ActionController::API
   end
 
   def logged_in?
-    !!current_user
+    !!current_user || current_user.account_level == 'guest'
   end
   
   def admin?
@@ -45,11 +45,12 @@ class ApplicationController < ActionController::API
   end
 
   def require_viewer
-    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_view(current_user, true)
+    url = "forum/#{params[:subsection_slug]}/#{params[:topic_slug]}"
+    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_view(current_user, url)
   end
 
   def require_poster
-    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_post(current_user)
+    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_post(current_user, params[:password])
   end
 
   def subsection

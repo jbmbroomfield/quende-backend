@@ -67,8 +67,9 @@ def rand_topic(subsection)
         title: Faker::Lorem.sentence(word_count: 1, random_words_to_add: 4),
         subsection: subsection,
         user_id: rand(User.count) + 1,
-        who_can_view: 'all',
-        who_can_post: 'users',
+        who_can_view: 'anyone',
+        who_can_post: 'anyone',
+        guest_access: 'view',
         status: 'published',
     )
     10.times do

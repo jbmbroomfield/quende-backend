@@ -7,24 +7,19 @@ class Api::V1::TopicsController < ApplicationController
     topic = Topic.create(topic_params)
     topic.subsection = Subsection.find_by(slug: params[:subsection_slug])
     topic.status = 'unpublished'
-    topic.who_can_view = 'all'
-    topic.who_can_post = 'users'
+    topic.who_can_view = 'anyone'
+    topic.who_can_post = 'anyone'
+    topic.guest_access = 'view'
     topic.user = current_user
     topic.save
     UserTopic.create(user: current_user, topic: topic, status: 'poster')
-    # post_params = params.require(:post).permit(
-    #     :text
-    # )
-    # post_params[:user] = current_user
-    # post_params[:topic] = topic
-    # post = Post.new(post_params)
-    # post.save
     render json: TopicSerializer.new(topic, params: {user: current_user}).serializable_hash, status: :created
   end
   
   def index
-    # subsection = Subsection.find_by(slug: params[:subsection_slug])
-    topics = subsection.topics.filter { |topic| topic.can_view(current_user) }
+    topics = subsection.topics.filter do |topic|
+      topic.can_view(current_user)
+    end
     render json: TopicSerializer.new(topics ,{params: {user: current_user}}).serializable_hash, status: :ok
   end
 
@@ -33,8 +28,6 @@ class Api::V1::TopicsController < ApplicationController
   end
 
   def update
-    # subsection = Subsection.find_by(slug: params[:subsection_slug])
-    # topic = Topic.find_by(subsection: subsection, slug: params[:topic_slug])
     if topic.user === current_user
       topic.update(topic_params)
       render_object(topic)
@@ -68,6 +61,7 @@ class Api::V1::TopicsController < ApplicationController
       :title,
       :who_can_view,
       :who_can_post,
+      :guest_access,
     )
   end
 

@@ -1,13 +1,9 @@
 class TopicSerializer
   include JSONAPI::Serializer
-  attributes :title, :subsection_slug, :post_count, :first_poster, :slug, :user_slug, :status, :who_can_post, :who_can_view
-
-  attribute :can_view do |topic, params|
-    topic.can_view(params[:user])
-  end
+  attributes :title, :subsection_slug, :post_count, :first_poster, :slug, :user_slug, :status, :who_can_post, :who_can_view, :guest_access, :password
 
   attribute :can_post do |topic, params|
-    topic.can_post(params[:user])
+    topic.can_post(params[:user], params[:passwords])
   end
 
   attribute :posters do |topic, params|
