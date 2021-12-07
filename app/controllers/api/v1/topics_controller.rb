@@ -1,6 +1,6 @@
 class Api::V1::TopicsController < ApplicationController
 
-  before_action :require_login, only: [:create, :update, :add_viewer, :add_poster]
+  before_action :require_login, only: [:create, :update, :add_viewer]
   before_action :require_viewer, only: [:show]
 
   def create
@@ -48,9 +48,19 @@ class Api::V1::TopicsController < ApplicationController
   def add_poster
     if current_user == topic.user
       poster = User.find_by(slug: params[:poster_slug])
-      topic.add_poster(poster)
-    end
-    Notification.user_added_to_topic(topic, poster, 'poster')
+      Notification.user_added_to_topic(topic, poster, 'poster')
+    else
+      if (
+        (topic.who_can_post != 'password') ||
+        (topic.guest_access != 'post' && current_user.account_level == 'guest') ||
+        (!topic.password || !params[:password] || topic.password != params[:password])
+      )
+        render json: { message: 'Unauthorized' }, status: :unauthorized
+        return
+      end
+      poster = current_user
+    end 
+    topic.add_poster(poster)
     render json: TopicSerializer.new(topic, {params: {user: current_user}}).serializable_hash, status: :ok
   end
 

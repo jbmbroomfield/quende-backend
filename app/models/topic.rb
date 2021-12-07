@@ -142,6 +142,15 @@ class Topic < ApplicationRecord
   end
 
   def add_poster(user)
+    puts [
+      "---------------------------topic--------------------",
+      user,
+      "--------------------------------------------------",
+      "--------------------------------------------------",
+      "--------------------------------------------------",
+      "--------------------------------------------------",
+      "--------------------------------------------------",
+    ]
     return if !user
     user.set_guest_data
     user_topic = self.user_topics.find_or_create_by(user: user)
@@ -152,28 +161,28 @@ class Topic < ApplicationRecord
   end
 
   def viewers
-    user_topics = self.user_topics.filter { |user_topic| ['viewer', 'poster'].include?(user_topic.status) && user_topic.user.account_level != 'guest' }
+    user_topics = self.user_topics.filter { |user_topic| ['viewer', 'poster'].include?(user_topic.status) }
     user_topics.map { |user_topic| user_topic.user }.uniq
   end
 
   def viewers_serialized
-    viewers.map { |viewer| user_serialied(viewer) }
+    viewers.filter { |viewer| viewer.account_level != 'guest' }.map { |viewer| user_serialized(viewer) }
   end
 
   def posters
     if ['users', 'all'].include?(who_can_post)
       users.uniq
     else
-      user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' && user_topic.user.account_level != 'guest' }
+      user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' }
       user_topics.map { |user_topic| user_topic.user }.uniq
     end
   end
 
   def posters_serialized
-    posters.map { |poster| user_serialied(poster) }
+    posters.filter { |poster| poster.account_level != 'guest'}.map { |poster| user_serialized(poster) }
   end
 
-  def user_serialied(user)
+  def user_serialized(user)
     {
       id: user.id,
       type: 'user',

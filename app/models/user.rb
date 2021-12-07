@@ -29,14 +29,17 @@ class User < ApplicationRecord
     end
   end
 
+  before_save do
+    if self.account_level == 'guest' && !self.guest_data && self.username
+      self.guest_data = true
+    end
+  end
+
   after_save do
-    if self.account_level == 'guest'
-      if !self.guest_data && self.username
-        self.set_guest_data
-      end
-    else
+    if self.account_level != 'guest'
       MainChannel.broadcast_update
     end
+    UserChannel.user_update(self)
   end
 
 

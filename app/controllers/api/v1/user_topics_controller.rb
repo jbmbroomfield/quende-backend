@@ -16,7 +16,7 @@ class Api::V1::UserTopicsController < ApplicationController
     private
 
     def get_user_topic
-        UserTopic.find_or_create_by(user: current_user, topic_id: params[:topic_id])
+        UserTopic.find_or_create_by(user: current_user, topic: topic)
     end
 
 end

@@ -19,4 +19,11 @@ class UserChannel < ApplicationCable::Channel
       )
     end
 
+    def self.user_update(user)
+      self.broadcast(
+        user,
+        type: 'user_update',
+      )
+    end
+
 end

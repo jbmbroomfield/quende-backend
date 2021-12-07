@@ -9,6 +9,10 @@ class Api::V1::PostsController < ApplicationController
     post.topic = topic
     post.user = current_user
     post.save
+    if post.guest_name && post.user.account_level == 'guest'
+      post.user.username = post.guest_name
+      post.user.save
+    end
     render json: PostSerializer.new(post, params: {user: current_user}).serializable_hash, status: :created
   end
   

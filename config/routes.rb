@@ -41,8 +41,8 @@ Rails.application.routes.draw do
 				delete 'flags', to: 'flags#destroy'
 			end
 
-			get 'user_topics/:topic_id', to: 'user_topics#show'
-			post 'user_topics/:topic_id/subscribe', to: 'user_topics#subscribe'
+			get 'user_topics/:subsection_slug/:topic_slug', to: 'user_topics#show'
+			post 'user_topics/:subsection_slug/:topic_slug/subscribe', to: 'user_topics#subscribe'
 
 			resources :notifications, only: [:index, :destroy]
 
