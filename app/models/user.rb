@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :flags
   has_many :topics
+  has_many :user_topics, dependent: :destroy
   has_one :password_authentication
   accepts_nested_attributes_for :password_authentication
 
@@ -29,7 +30,11 @@ class User < ApplicationRecord
   end
 
   after_save do
-    if self.account_level != 'guest'
+    if self.account_level == 'guest'
+      if !self.guest_data && self.username
+        self.set_guest_data
+      end
+    else
       MainChannel.broadcast_update
     end
   end
@@ -54,6 +59,12 @@ class User < ApplicationRecord
 
   def admin?
     account_level == 'admin'
+  end
+
+  def set_guest_data
+    return if self.account_level != 'guest'
+    self.guest_data = true
+    self.save
   end
 
 end

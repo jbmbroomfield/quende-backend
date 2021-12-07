@@ -133,6 +133,7 @@ class Topic < ApplicationRecord
 
   def add_viewer(user)
     return if !user
+    user.set_guest_data
     user_topic = self.user_topics.find_or_create_by(user: user)
     if !['viewer', 'poster'].include?(user_topic.status)
       user_topic.status = 'viewer'
@@ -142,6 +143,7 @@ class Topic < ApplicationRecord
 
   def add_poster(user)
     return if !user
+    user.set_guest_data
     user_topic = self.user_topics.find_or_create_by(user: user)
     if user_topic.status != 'poster'
       user_topic.status = 'poster'
@@ -150,8 +152,8 @@ class Topic < ApplicationRecord
   end
 
   def viewers
-    user_topics = self.user_topics.filter { |user_topic| ['viewer', 'poster'].include?(user_topic.status)}
-    user_topics.map { |user_topic| user_topic.user }
+    user_topics = self.user_topics.filter { |user_topic| ['viewer', 'poster'].include?(user_topic.status) && user_topic.user.account_level != 'guest' }
+    user_topics.map { |user_topic| user_topic.user }.uniq
   end
 
   def viewers_serialized
@@ -162,8 +164,8 @@ class Topic < ApplicationRecord
     if ['users', 'all'].include?(who_can_post)
       users.uniq
     else
-      user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' }
-      user_topics.map { |user_topic| user_topic.user }
+      user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' && user_topic.user.account_level != 'guest' }
+      user_topics.map { |user_topic| user_topic.user }.uniq
     end
   end
 
@@ -177,7 +179,8 @@ class Topic < ApplicationRecord
       type: 'user',
       attributes: {
         username: user.username,
-        slug: user.slug
+        slug: user.slug,
+        account_level: user.account_level,
       }
     }
   end

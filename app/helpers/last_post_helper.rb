@@ -1,7 +1,7 @@
 module LastPostHelper
 
   def last_post(current_user)
-    post = posts.last
+    post = posts.filter { |post| post.topic.can_view(current_user) }.last
     post ? {
       id: post.id,
       type: 'post',
