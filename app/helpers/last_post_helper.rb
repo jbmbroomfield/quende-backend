@@ -58,12 +58,14 @@ module LastPostHelper
         attributes: {
           username: user.username,
           slug: user.slug,
+          account_level: user.account_level,
         }
       } : {
         id: 'none',
-        type: 'guest',
+        type: 'user',
         attributes: {
           username: post.guest_name,
+          account_level: 'guest',
         }
       },
     }
