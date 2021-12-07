@@ -90,11 +90,9 @@ class Topic < ApplicationRecord
   end
 
   def can_view(user, url = nil)
-    if status == 'unpublished'
-      user == self.user
-    else
-      can_view_published(user, url)
-    end
+    return true if user == self.user
+    return false if status == 'unpublished'
+    can_view_published(user, url)
   end
 
   def can_view_published(user, url)
@@ -111,11 +109,9 @@ class Topic < ApplicationRecord
   end
 
   def can_post(user, password = nil)
-    if status === 'unpublished'
-      user === self.user
-    else
-      can_post_published(user, password)
-    end
+    return true if user == self.user
+    return false if status == 'unpublished'
+    can_post_published(user, password)
   end
 
   def can_post_published(user, password)
@@ -142,15 +138,6 @@ class Topic < ApplicationRecord
   end
 
   def add_poster(user)
-    puts [
-      "---------------------------topic--------------------",
-      user,
-      "--------------------------------------------------",
-      "--------------------------------------------------",
-      "--------------------------------------------------",
-      "--------------------------------------------------",
-      "--------------------------------------------------",
-    ]
     return if !user
     user.set_guest_data
     user_topic = self.user_topics.find_or_create_by(user: user)

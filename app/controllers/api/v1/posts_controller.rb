@@ -7,12 +7,17 @@ class Api::V1::PostsController < ApplicationController
   def create
     post = Post.new(post_params)
     post.topic = topic
-    post.user = current_user
-    post.save
-    if post.guest_name && post.user.account_level == 'guest'
-      post.user.username = post.guest_name
-      post.user.save
+    user = current_user
+    if user.account_level == 'guest'
+      post.user = nil
+      if post.guest_name
+        user.username = post.guest_name
+        user.save
+      end
+    else
+      post.user = user
     end
+    post.save
     render json: PostSerializer.new(post, params: {user: current_user}).serializable_hash, status: :created
   end
   
