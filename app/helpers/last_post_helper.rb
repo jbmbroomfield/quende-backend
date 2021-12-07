@@ -27,6 +27,7 @@ module LastPostHelper
           type: 'user',
           attributes: {
             username: self.user.username,
+            slug: self.user.slug,
           },
       },
       }
@@ -56,6 +57,7 @@ module LastPostHelper
         type: 'user',
         attributes: {
           username: user.username,
+          slug: user.slug,
         }
       } : {
         id: 'none',
