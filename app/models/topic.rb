@@ -81,6 +81,7 @@ class Topic < ApplicationRecord
       id: poster.id,
       attributes: {
         username: poster.username,
+        slug: poster.slug,
       }
     } : ''
   end
