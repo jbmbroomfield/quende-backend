@@ -1,7 +1,7 @@
 module LastPostHelper
 
   def last_post(current_user)
-    post = posts.filter { |post| post.topic.can_view(current_user) }.last
+    post = posts.filter { |post| post.topic.can_view(current_user) }.sort { |a, b| a.created_at <=> b.created_at }.last
     post ? {
       id: post.id,
       type: 'post',
@@ -16,7 +16,7 @@ module LastPostHelper
           attributes: {
             title: self.title,
             slug: self.slug,
-            subsection_id: self.subsection.id,
+            subsection_slug: self.subsection.slug,
           }
         },
         created_at_i: self.created_at.to_i,
@@ -46,7 +46,7 @@ module LastPostHelper
         attributes: {
           title: topic.title,
           slug: topic.slug,
-          subsection_id: topic.subsection.id,
+          subsection_slug: topic.subsection.slug,
         }
       },
       created_at_i: post.created_at.to_i,
