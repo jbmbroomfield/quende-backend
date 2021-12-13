@@ -11,7 +11,7 @@ class Api::V1::SubsectionsController < ApplicationController
 
     def index
         subsections = Subsection.all
-        render json: SubsectionSerializer.new(subsections ,{params: {user: current_user}}).serializable_hash, status: :ok
+        render json: SubsectionSerializer.new(subsections).serializable_hash, status: :ok
     end
 
     def show
