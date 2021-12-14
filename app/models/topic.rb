@@ -132,24 +132,18 @@ class Topic < ApplicationRecord
     return if !user
     user.set_guest_data
     user_topic = self.user_topics.find_or_create_by(user: user)
-    if !['viewer', 'poster'].include?(user_topic.status)
-      user_topic.status = 'viewer'
-      user_topic.save
-    end
+    user_topic.update(can_view: true)
   end
 
   def add_poster(user)
     return if !user
     user.set_guest_data
     user_topic = self.user_topics.find_or_create_by(user: user)
-    if user_topic.status != 'poster'
-      user_topic.status = 'poster'
-      user_topic.save
-    end
+    user_topic.update(can_post: true)
   end
 
   def viewers
-    user_topics = self.user_topics.filter { |user_topic| ['viewer', 'poster'].include?(user_topic.status) }
+    user_topics = self.user_topics.filter { |user_topic| user_topic.can_view }
     user_topics.map { |user_topic| user_topic.user }.uniq
   end
 
@@ -161,7 +155,7 @@ class Topic < ApplicationRecord
     if ['users', 'all'].include?(who_can_post)
       users.uniq
     else
-      user_topics = self.user_topics.filter { |user_topic| user_topic.status == 'poster' }
+      user_topics = self.user_topics.filter { |user_topic| user_topic.can_post }
       user_topics.map { |user_topic| user_topic.user }.uniq
     end
   end
