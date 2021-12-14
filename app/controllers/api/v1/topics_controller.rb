@@ -20,7 +20,7 @@ class Api::V1::TopicsController < ApplicationController
     topics = subsection.topics.filter do |topic|
       topic.can_view(current_user)
     end
-    render json: TopicSerializer.new(topics ,{params: {user: current_user}}).serializable_hash, status: :ok
+    render json: TopicSerializer.new(topics, {params: {user: current_user, quick: true}}).serializable_hash, status: :ok
   end
 
   def show
