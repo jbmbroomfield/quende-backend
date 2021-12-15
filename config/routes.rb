@@ -41,9 +41,11 @@ Rails.application.routes.draw do
 				delete 'flags', to: 'flags#destroy'
 			end
 
+			get 'user_topics/:subsection_slug', to: 'user_topics#index'
 			get 'user_topics/:subsection_slug/:topic_slug', to: 'user_topics#show'
 			post 'user_topics/:subsection_slug/:topic_slug/subscribe', to: 'user_topics#subscribe'
 			patch 'user_topics/:subsection_slug/:topic_slug', to: 'user_topics#update'
+
 
 			resources :notifications, only: [:index, :destroy]
 

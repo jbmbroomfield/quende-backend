@@ -2,6 +2,13 @@ class Api::V1::UserTopicsController < ApplicationController
 
   before_action :require_login
 
+  def index
+    user_topics = UserTopic.all.filter do |user_topic|
+      user_topic.user == current_user && user_topic.subsection == subsection
+    end
+    render_json(user_topics)
+  end
+
   def show
     render_object(get_user_topic)
   end

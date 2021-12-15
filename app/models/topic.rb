@@ -86,20 +86,26 @@ class Topic < ApplicationRecord
     } : ''
   end
 
+  def ignored?(user)
+    user_topic = UserTopic.find_or_create_by(user: user, topic: self)
+    !user.show_ignored && user_topic.status === 'ignored'
+  end
+
   def url
     "forum/#{subsection.slug}/#{slug}"
   end
 
-  def can_view(user, url = nil)
+  def can_view(user, show_ignored = false, url = nil)
     return true if user == self.user
     return false if status == 'unpublished'
-    can_view_published(user, url)
+    can_view_published(user, show_ignored, url)
   end
 
-  def can_view_published(user, url)
+  def can_view_published(user, show_ignored, url)
     if !guest_access
       return false if !user || user.account_level == 'guest'
     end
+    return false if !show_ignored && self.ignored?(user)
     return true if who_can_view == 'anyone'
     return true if viewers.include?(user)
     if who_can_view == 'url' && url && url == self.url
