@@ -50,6 +50,7 @@ class Api::V1::UsersController < ApplicationController
             :username,
             :email,
             :time_zone,
+            :show_ignored,
             # :avatar_image,
             password_authentication_attributes: [
                 :password,
@@ -63,6 +64,7 @@ class Api::V1::UsersController < ApplicationController
             :email,
             :time_zone,
             :page_size,
+            :show_ignored,
             password_authentication_attributes: [
                 :password,
                 :password_confirmation

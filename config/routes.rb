@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 			resources :users, only: [:create, :index]
 			get 'users/:user_slug', to: 'users#show'
 			post '/login', to: 'auth#create'
-      post '/guest-login', to: 'auth#guest_login'
+      		post '/guest-login', to: 'auth#guest_login'
 			
 			get '/profile', to: 'users#profile'
 

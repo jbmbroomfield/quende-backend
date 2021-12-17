@@ -27,7 +27,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def show
-    render_one
+    post = Post.find(params[:id])
+    render json: PostSerializer.new(post, {params: {user: current_user}}).serializable_hash, status: :ok
   end
 
   private

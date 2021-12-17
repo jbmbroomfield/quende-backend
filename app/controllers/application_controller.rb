@@ -46,8 +46,7 @@ class ApplicationController < ActionController::API
 
   def require_viewer
     url = "forum/#{params[:subsection_slug]}/#{params[:topic_slug]}"
-    show_ignored = true
-    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_view(current_user, show_ignored, url)
+    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_view(current_user, url)
   end
 
   def require_poster

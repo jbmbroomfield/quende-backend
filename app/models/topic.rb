@@ -65,18 +65,18 @@ class Topic < ApplicationRecord
 
   def subscribers(excluding=nil)
     self.user_topics
-    .where(subscribed: true)
+    .where(status: 'subscribed')
     .where.not(user: excluding)
     .map{ |user_topic| user_topic.user }
   end
 
   def post_count
-    posts.count - 1
+    posts.count
   end
 
   def first_poster
     first_post = posts.first
-    poster = first_post && first_post.user
+    poster = (first_post && first_post.user) || user
     poster ? {
       id: poster.id,
       attributes: {
@@ -88,24 +88,23 @@ class Topic < ApplicationRecord
 
   def ignored?(user)
     user_topic = UserTopic.find_or_create_by(user: user, topic: self)
-    !user.show_ignored && user_topic.status === 'ignored'
+    user_topic.status === 'ignored'
   end
 
   def url
     "forum/#{subsection.slug}/#{slug}"
   end
 
-  def can_view(user, show_ignored = false, url = nil)
+  def can_view(user, url = nil)
     return true if user == self.user
     return false if status == 'unpublished'
-    can_view_published(user, show_ignored, url)
+    can_view_published(user, url)
   end
 
-  def can_view_published(user, show_ignored, url)
+  def can_view_published(user, url)
     if !guest_access
       return false if !user || user.account_level == 'guest'
     end
-    return false if !show_ignored && self.ignored?(user)
     return true if who_can_view == 'anyone'
     return true if viewers.include?(user)
     if who_can_view == 'url' && url && url == self.url

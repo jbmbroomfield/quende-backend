@@ -1,7 +1,22 @@
 module LastPostHelper
 
+  def last_unignored_post(current_user)
+    post = posts
+    .filter { |post| post.topic.can_view(current_user) && !post.topic.ignored?(current_user) }
+    .sort { |a, b| a.created_at <=> b.created_at }.last
+    serialized_post(post, current_user)
+  end
+
   def last_post(current_user)
-    post = posts.filter { |post| post.topic.can_view(current_user) }.sort { |a, b| a.created_at <=> b.created_at }.last
+    post = posts
+    .filter { |post| post.topic.can_view(current_user) }
+    .sort { |a, b| a.created_at <=> b.created_at }.last
+    serialized_post(post, current_user)
+  end
+
+  private
+
+  def serialized_post(post, current_user)
     post ? {
       id: post.id,
       type: 'post',
@@ -16,25 +31,23 @@ module LastPostHelper
           attributes: {
             title: self.title,
             slug: self.slug,
-            subsection_slug: self.subsection.slug,
+            subsection_slug: self.class.method_defined?(:subsection) ? self.subsection.slug : self.slug,
           }
         },
         created_at_i: self.created_at.to_i,
         created_at_s: '',
         tag: nil,
-        user: {
+        user: self.class.method_defined?(:user) ? {
           id: self.user.id,
           type: 'user',
           attributes: {
             username: self.user.username,
             slug: self.user.slug,
           },
-      },
+      } : nil,
       }
     }
   end
-
-  private
 
   def get_attributes(post, current_user)
     topic = post.topic
