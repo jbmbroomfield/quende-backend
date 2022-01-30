@@ -14,4 +14,11 @@ RSpec.describe Forum, type: :model do
     expect(forum2.slug).to eq('test-slug-forum-2')
   end
 
+  it 'sets the given user to be an admin' do
+    user = User.create(username: 'Test User')
+    forum = Forum.create(title: 'Test User Admin Forum', user: user)
+    expect(forum.admins.count).to eq(1)
+    expect(forum.admins.first).to eq(user)
+  end
+
 end
