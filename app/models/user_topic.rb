@@ -5,7 +5,17 @@ class UserTopic < ApplicationRecord
   # belongs_to :last_read_post
 
   before_create do
-    self.can_post = topic.who_can_post == 'anyone' || topic.user == self.user || topic.viewers.include?(self.user)
+    if self.can_post == nil
+      if topic.user == self.user || topic.viewers.include?(self.user)
+        self.can_post = true
+      elsif topic.who_can_post == 'anyone'
+        if self.user.account_level == 'guest'
+          self.can_post = topic.guest_access == 'post'
+        else
+          self.can_post = true
+        end
+      end
+    end
     self.status = 'unsubscribed' if !self.status
   end
 

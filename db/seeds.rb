@@ -79,11 +79,11 @@ end
 
 def rand_subsection(section)
   subsection = Subsection.create(title: Faker::App.name, section: section)
-  if subsection.id > 1
+  # if subsection.id > 1
     3.times do
       rand_topic(subsection)
     end
-  end
+  # end
 end
 
 def rand_section
@@ -97,7 +97,6 @@ end
   rand_user
 end
 
-
 3.times do
   rand_section
 end
@@ -107,23 +106,23 @@ topic = Topic.first
   rand_post(topic)
 end
 
-who_can_views = ['anyone', 'url', 'add']
-who_can_posts = ['anyone', 'password', 'add']
-guest_accesses = [nil, 'view', 'post']
+# who_can_views = ['anyone', 'url', 'add']
+# who_can_posts = ['anyone', 'password', 'add']
+# guest_accesses = [nil, 'view', 'post']
 
-section = Section.first
-subsection = section.subsections.first
-user = User.all[1]
+# section = Section.first
+# subsection = section.subsections.first
+# user = User.all[1]
 
-who_can_views.each do |who_can_view|
-  who_can_posts.each do |who_can_post|
-    guest_accesses.each do |guest_access|
-      if !(guest_access && who_can_view == 'add') && !(guest_access == 'post' && who_can_post == 'add')
-        title = "View: #{who_can_view}, Post: #{who_can_post}, Guests: #{guest_access || 'none'}"
-        password = who_can_post == 'password' ? '123' : nil
-        topic = Topic.create(user: user, subsection: subsection, title: title, who_can_view: who_can_view, who_can_post: who_can_post, guest_access: guest_access, password: password)
-        Post.create(user: user, topic: topic, text: title)
-      end
-    end
-  end
-end
+# who_can_views.each do |who_can_view|
+#   who_can_posts.each do |who_can_post|
+#     guest_accesses.each do |guest_access|
+#       if !(guest_access && who_can_view == 'add') && !(guest_access == 'post' && who_can_post == 'add')
+#         title = "View: #{who_can_view}, Post: #{who_can_post}, Guests: #{guest_access || 'none'}"
+#         password = who_can_post == 'password' ? '123' : nil
+#         topic = Topic.create(user: user, subsection: subsection, title: title, who_can_view: who_can_view, who_can_post: who_can_post, guest_access: guest_access, password: password)
+#         Post.create(user: user, topic: topic, text: title)
+#       end
+#     end
+#   end
+# end
