@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_004830) do
+ActiveRecord::Schema.define(version: 2022_01_30_030810) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,16 @@ ActiveRecord::Schema.define(version: 2022_01_30_004830) do
     t.index ["user_id"], name: "index_topics_on_user_id"
   end
 
+  create_table "user_forums", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "forum_id", null: false
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["forum_id"], name: "index_user_forums_on_forum_id"
+    t.index ["user_id"], name: "index_user_forums_on_user_id"
+  end
+
   create_table "user_topics", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "topic_id", null: false
@@ -163,6 +173,8 @@ ActiveRecord::Schema.define(version: 2022_01_30_004830) do
   add_foreign_key "subsections", "sections"
   add_foreign_key "topics", "subsections"
   add_foreign_key "topics", "users"
+  add_foreign_key "user_forums", "forums"
+  add_foreign_key "user_forums", "users"
   add_foreign_key "user_topics", "topics"
   add_foreign_key "user_topics", "users"
 end
