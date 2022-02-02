@@ -84,6 +84,15 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 end
 
+
+def user1
+  User.first
+end
+
+def user1_password
+  "bob"
+end
+
 def user1_jwt
   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.NymJjBH1jd4Hs4xBGgEKussqkkIcqmpT834F5zfEY0o"
 end
@@ -111,9 +120,13 @@ def json
 end
 
 def data
-  json[:data]
+  json && json[:data]
+end
+
+def attributes
+  data && data[:attributes]
 end
 
 def jwt
-  json[:jwt]
+  json && json[:jwt]
 end
