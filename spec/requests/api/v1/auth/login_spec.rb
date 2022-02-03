@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Api::V1::Auths", type: :request do
+RSpec.describe "Api::V1::Auth", type: :request do
   describe "POST /login" do
 
     it "returns http create and a jwt token" do
