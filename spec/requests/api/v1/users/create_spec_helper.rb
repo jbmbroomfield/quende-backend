@@ -1,11 +1,11 @@
-def body
+def create_successful_body
   {
     user: {
       username: "Test User",
       email: "test@email.com",
       password_authentication_attributes: {
         password: "test-pass",
-        "password-confirmation": "test-pass"
+        "password_confirmation": "test-pass"
       }
     }
   }
@@ -21,7 +21,7 @@ def expected_attributes
   }
 end
 
-def mismatched_body
+def create_mismatched_body
   {
     user: {
       username: "Test Userzz",
@@ -34,40 +34,14 @@ def mismatched_body
   }
 end
 
-def existing_username_body
+def create_existing_username_body
   {
     user: {
       username: user1.username.downcase,
       email: "test@email.com",
       password_authentication_attributes: {
         password: "test-pass",
-        "password-confirmation": "test-pass"
-      }
-    }
-  }
-end
-
-def existing_email_body
-  {
-    user: {
-      username: "Test User",
-      email: user1.email.upcase,
-      password_authentication_attributes: {
-        password: "test-pass",
-        "password-confirmation": "test-pass"
-      }
-    }
-  }
-end
-
-def existing_username_and_email_body
-  {
-    user: {
-      username: user1.username.upcase,
-      email: user1.email,
-      password_authentication_attributes: {
-        password: "test-pass",
-        "password-confirmation": "test-pass"
+        password_confirmation: "test-pass"
       }
     }
   }

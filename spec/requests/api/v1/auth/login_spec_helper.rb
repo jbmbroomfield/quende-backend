@@ -1,4 +1,4 @@
-def body
+def login_success_body
   {
     "user": {
       "username": user1.username,
@@ -9,7 +9,7 @@ def body
   }
 end
 
-def incorrect_username_body
+def login_incorrect_username_body
   {
     "user": {
       "username": "fdsohdisvgh",
@@ -20,7 +20,7 @@ def incorrect_username_body
   }
 end
 
-def incorrect_password_body
+def login_incorrect_password_body
   {
     "user": {
       "username": user1.username,

@@ -1,5 +1,5 @@
 def user1
-  User.first
+  User.find_by(username: "Jim")
 end
 
 def user1_password

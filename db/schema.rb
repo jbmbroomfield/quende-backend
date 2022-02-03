@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_030810) do
+ActiveRecord::Schema.define(version: 2022_02_03_092035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 2022_01_30_030810) do
     t.string "username"
     t.string "email"
     t.string "avatar"
-    t.string "account_level"
+    t.string "account_level", default: "member"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "time_zone", default: "UTC"

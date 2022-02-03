@@ -8,15 +8,14 @@ RSpec.describe "Api::V1::Users", type: :request do
   describe "POST/users" do
 
     it "creates and returns a new user" do
-      post url, params: body
+      post url, params: create_successful_body
       expect(response).to have_http_status(:success)
       expect(attributes).to eq(expected_attributes)
       expect(User.count).to eq(user_count + 1)
     end
 
     it "rejects mismatched passwords" do
-      post url, params: mismatched_body
-      p ['response',response]
+      post url, params: create_mismatched_body
       expect(response).to have_http_status(:not_acceptable)
       expect(json).to eq({
         errors:
@@ -28,32 +27,11 @@ RSpec.describe "Api::V1::Users", type: :request do
     end
 
     it "rejects a username with the same slug as a pre-existing username" do
-      post url, params: existing_username_body
+      post url, params: create_existing_username_body
       expect(response).to have_http_status(:not_acceptable)
       expect(json).to eq({
         errors: {
           username: "Username unavailable."
-        }
-      })
-    end
-
-    it "rejects a pre-existing email" do
-      post url, params: existing_email_body
-      expect(response).to have_http_status(:not_acceptable)
-      expect(json).to eq({
-        errors: {
-          email: "Email unavailable."
-        }
-      })
-    end
-
-    it "rejects a pre-existing username and email" do
-      post url, params: existing_username_and_email_body
-      expect(response).to have_http_status(:not_acceptable)
-      expect(json).to eq({
-        errors: {
-          username: "Username unavailable.",
-          email: "Email unavailable."
         }
       })
     end

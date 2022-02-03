@@ -7,7 +7,7 @@ RSpec.describe "Api::V1::Auth", type: :request do
   describe "POST /login" do
 
     it "returns http create and a jwt token" do
-			post url, params: body
+			post url, params: login_success_body
 			expect(response).to have_http_status(:success)
 			expect(jwt).to eq(user1_jwt)
 			attributes = json[:user][:data][:attributes]
@@ -15,7 +15,7 @@ RSpec.describe "Api::V1::Auth", type: :request do
   	end
 
 		it "rejects an incorrect username" do
-			post url, params: incorrect_username_body
+			post url, params: login_incorrect_username_body
 			expect(response).to have_http_status(:unauthorized)
 			expect(json).to eq({
 				errors: {
@@ -25,7 +25,7 @@ RSpec.describe "Api::V1::Auth", type: :request do
 		end
 
 		it "rejects an incorrect password" do
-			post url, params: incorrect_password_body
+			post url, params: login_incorrect_password_body
 			expect(response).to have_http_status(:unauthorized)
 			expect(json).to eq({
 				errors: {

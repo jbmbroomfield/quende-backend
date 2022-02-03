@@ -42,7 +42,6 @@ class User < ApplicationRecord
     UserChannel.user_update(self)
   end
 
-
   def get_avatar_image
     if self.avatar_image.attached?
         # {
