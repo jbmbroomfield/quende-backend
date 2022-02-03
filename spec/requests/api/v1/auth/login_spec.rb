@@ -1,18 +1,13 @@
 require "rails_helper"
+require "requests/api/v1/auth/login_spec_helper"
+
+url = "/api/v1/login"
 
 RSpec.describe "Api::V1::Auth", type: :request do
   describe "POST /login" do
 
     it "returns http create and a jwt token" do
-			body = {
-				"user": {
-					"username": user1.username,
-					"password_authentication_attributes": {
-						"password": user1_password
-					}
-				}
-			}
-			post "/api/v1/login", params: body
+			post url, params: body
 			expect(response).to have_http_status(:success)
 			expect(jwt).to eq(user1_jwt)
 			attributes = json[:user][:data][:attributes]
@@ -20,29 +15,23 @@ RSpec.describe "Api::V1::Auth", type: :request do
   	end
 
 		it "rejects an incorrect username" do
-			body = {
-				"user": {
-					"username": "fdsohdisvgh",
-					"password_authentication_attributes": {
-						"password": user1_password
-					}
-				}
-			}
-			post "/api/v1/login", params: body
+			post url, params: incorrect_username_body
 			expect(response).to have_http_status(:unauthorized)
+			expect(json).to eq({
+				errors: {
+					error: "Invalid username or password."
+				}
+			})
 		end
 
 		it "rejects an incorrect password" do
-			body = {
-				"user": {
-					"username": user1.username,
-					"password_authentication_attributes": {
-						"password": "incorrect password"
-					}
-				}
-			}
-			post "/api/v1/login", params: body
+			post url, params: incorrect_password_body
 			expect(response).to have_http_status(:unauthorized)
+			expect(json).to eq({
+				errors: {
+					error: "Invalid username or password."
+				}
+			})
 		end
 
   end
