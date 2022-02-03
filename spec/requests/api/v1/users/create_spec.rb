@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       p ['response',response]
       expect(response).to have_http_status(:not_acceptable)
       expect(json).to eq({
-        message: "Passwords do not match."
+        password_confirmation: "Passwords do not match."
       })
     end
 
@@ -27,7 +27,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       post url, params: existing_username_body
       expect(response).to have_http_status(:not_acceptable)
       expect(json).to eq({
-        message: "Username unavailable."
+        username: "Username unavailable."
       })
     end
 
@@ -35,7 +35,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       post url, params: existing_email_body
       expect(response).to have_http_status(:not_acceptable)
       expect(json).to eq({
-        message: "Email unavailable."
+        email: "Email unavailable."
       })
     end
 
@@ -43,7 +43,8 @@ RSpec.describe "Api::V1::Users", type: :request do
       post url, params: existing_username_and_email_body
       expect(response).to have_http_status(:not_acceptable)
       expect(json).to eq({
-        message: "Username and email unavailable."
+        username: "Username unavailable.",
+        email: "Email unavailable."
       })
     end
 
