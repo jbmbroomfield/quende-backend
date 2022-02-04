@@ -5,7 +5,7 @@ url = "/api/v1/users"
 user_count = User.count
 
 RSpec.describe "Api::V1::Users", type: :request do
-  describe "POST/users" do
+  describe "POST users" do
 
     it "creates and returns a new user" do
       post url, params: create_successful_body
