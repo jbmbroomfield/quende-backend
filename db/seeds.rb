@@ -8,87 +8,87 @@
 
 Faker::UniqueGenerator.clear
 
-User.create([
-  {
-    username: 'Jim',
-    password: 'bob',
-    email_address: 'jim@mail.com',
-  },
-  {
-    username: 'Alice',
-    password: 'bob',
-    email_address: 'alice@mail.com',
-  },
-  {
-    username: 'Bob',
-    password: 'bob',
-    email_address: 'bob@mail.com',
-  },
-])
+# User.create([
+#   {
+#     username: 'Jim',
+#     password: 'bob',
+#     email_address: 'jim@mail.com',
+#   },
+#   {
+#     username: 'Alice',
+#     password: 'bob',
+#     email_address: 'alice@mail.com',
+#   },
+#   {
+#     username: 'Bob',
+#     password: 'bob',
+#     email_address: 'bob@mail.com',
+#   },
+# ])
 
 
 
 
-def rand_user
-  User.create(
-    username: Faker::Superhero.unique.name,
-    password: 'bob',
-    email_address: 'hi@mail.com'
-  )
-end
+# def rand_user
+#   User.create(
+#     username: Faker::Superhero.unique.name,
+#     password: 'bob',
+#     email_address: 'hi@mail.com'
+#   )
+# end
 
-def rand_post(topic)
-  Post.create(
-    topic: topic,
-    user_id: rand(User.count) + 1,
-    text: Faker::Lorem.paragraph(sentence_count: 1, random_sentences_to_add: 9),
-  )
-end
+# def rand_post(topic)
+#   Post.create(
+#     topic: topic,
+#     user_id: rand(User.count) + 1,
+#     text: Faker::Lorem.paragraph(sentence_count: 1, random_sentences_to_add: 9),
+#   )
+# end
 
-def rand_topic(subsection)
-  user_id = rand(User.count) + 1
-  topic = Topic.create(
-    title: Faker::Lorem.sentence(word_count: 1, random_words_to_add: 4),
-    subsection: subsection,
-    user_id: rand(User.count) + 1,
-    who_can_view: 'anyone',
-    who_can_post: 'anyone',
-    guest_access: 'view',
-    status: 'published',
-  )
-  10.times do
-    rand_post(topic)
-  end
-end
+# def rand_topic(subsection)
+#   user_id = rand(User.count) + 1
+#   topic = Topic.create(
+#     title: Faker::Lorem.sentence(word_count: 1, random_words_to_add: 4),
+#     subsection: subsection,
+#     user_id: rand(User.count) + 1,
+#     who_can_view: 'anyone',
+#     who_can_post: 'anyone',
+#     guest_access: 'view',
+#     status: 'published',
+#   )
+#   10.times do
+#     rand_post(topic)
+#   end
+# end
 
-def rand_subsection(section)
-  subsection = Subsection.create(title: Faker::App.name, section: section)
-  # if subsection.id > 1
-    3.times do
-      rand_topic(subsection)
-    end
-  # end
-end
+# def rand_subsection(section)
+#   subsection = Subsection.create(title: Faker::App.name, section: section)
+#   # if subsection.id > 1
+#     3.times do
+#       rand_topic(subsection)
+#     end
+#   # end
+# end
 
-def rand_section
-  section = Section.create(title: Faker::ProgrammingLanguage.unique.name)
-  3.times do
-    rand_subsection(section)
-  end
-end
+# def rand_section
+#   section = Section.create(title: Faker::ProgrammingLanguage.unique.name)
+#   3.times do
+#     rand_subsection(section)
+#   end
+# end
 
-7.times do
-  rand_user
-end
+# 7.times do
+#   rand_user
+# end
 
-3.times do
-  rand_section
-end
+# 3.times do
+#   rand_section
+# end
 
-topic = Topic.first
-180.times do
-  rand_post(topic)
-end
+# topic = Topic.first
+# 180.times do
+#   rand_post(topic)
+# end
 
 # who_can_views = ['anyone', 'url', 'add']
 # who_can_posts = ['anyone', 'password', 'add']

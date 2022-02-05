@@ -16,11 +16,6 @@ class User < ApplicationRecord
 
   has_one_attached :avatar_image
 
-  def destroy_dependents
-    authentication && authentication.destroy
-    email && email.destroy
-  end
-
   def create_authentication
     if !authentication
       self.authentication = Authentication.create(user: self)
@@ -36,7 +31,7 @@ class User < ApplicationRecord
       self.email = Email.create(user: self, address: email_address)
       return
     end
-    self.email.address = email_address
+    email.address = email_address
   end
 
   def password=(password)
@@ -83,6 +78,25 @@ class User < ApplicationRecord
     return if self.account_level != 'guest'
     self.guest_data = true
     self.save
+  end
+
+  def self.create(params)
+    if params.is_a? Array
+      params.each do |entry|
+        self.create(entry)
+      end
+      return
+    end
+    username = params[:username]
+    return if !username
+    user = super(username: username)
+    if user.valid?
+      password = params[:password]
+      password && user.password = password
+      email_address = params[:email_address]
+      email_address && user.email_address = email_address
+    end
+    user
   end
 
 end

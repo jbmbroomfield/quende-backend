@@ -3,12 +3,14 @@ class Api::V1::UsersController < ApplicationController
 	before_action :require_login, only: [:update, :upload_avatar]
 
 	def create
-		user = User.create(user_params)
+		user = User.create(username: user_params[:username])
 		if user.valid?
+			user.email_address = user_params[:email_address]
+			user.password = user_params[:password]
 			@token = encode_token(user_id: user.id)
 			render_json(user, status: :created)
 		else
-			user.destroy_dependents
+			# user.destroy_dependents
 			if user.errors.full_messages.include?("Slug must be unique")
 				render json: {
 					errors: {
