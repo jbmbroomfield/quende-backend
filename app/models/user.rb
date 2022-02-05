@@ -30,9 +30,7 @@ class User < ApplicationRecord
   end
 
   after_save do
-    if self.account_level != 'guest'
-      MainChannel.broadcast_update
-    end
+    MainChannel.broadcast_update
     UserChannel.user_update(self)
   end
 
