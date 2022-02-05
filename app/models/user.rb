@@ -16,6 +16,8 @@ class User < ApplicationRecord
 
   has_one_attached :avatar_image
 
+  scope :guests, -> { where(guest: true) }
+
   def create_authentication
     if !authentication
       self.authentication = Authentication.create(user: self)
@@ -88,8 +90,9 @@ class User < ApplicationRecord
       return
     end
     username = params[:username]
+    guest = params[:guest] || false
     return if !username
-    user = super(username: username)
+    user = super(username: username, guest: guest)
     if user.valid?
       password = params[:password]
       password && user.password = password
@@ -97,6 +100,11 @@ class User < ApplicationRecord
       email_address && user.email_address = email_address
     end
     user
+  end
+
+  def self.create_guest
+    username = "Guest #{self.guests.count + 1}"
+    self.create(username: username, guest: true)
   end
 
 end
