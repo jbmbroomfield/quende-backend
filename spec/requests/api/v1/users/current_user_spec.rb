@@ -2,7 +2,7 @@ require "rails_helper"
 
 url = "/api/v1/current_user"
 
-RSpec.describe "Api::V1::Auth", type: :request do
+RSpec.describe "Api::V1::Users", type: :request do
   describe "GET /current_user" do
   
     it "returns a guest jwt and attributes when not logged in" do

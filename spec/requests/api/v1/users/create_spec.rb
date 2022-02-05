@@ -4,7 +4,7 @@ require "requests/api/v1/users/create_spec_helper"
 url = "/api/v1/users"
 
 RSpec.describe "Api::V1::Users", type: :request do
-  describe "POST users" do
+  describe "POST /users" do
 
     it "creates and returns a new user" do
       user_count = User.count
