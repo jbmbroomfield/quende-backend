@@ -11,24 +11,15 @@ Faker::UniqueGenerator.clear
 User.create([
   {
     username: 'Jim',
-    password_authentication_attributes: {
-      password: 'bob',
-      password_confirmation: 'bob',
-    },
+    password: 'bob',
   },
   {
     username: 'Alice',
-    password_authentication_attributes: {
-      password: 'bob',
-      password_confirmation: 'bob',
-    },
+    password: 'bob',
   },
   {
     username: 'Bob',
-    password_authentication_attributes: {
-      password: 'bob',
-      password_confirmation: 'bob',
-    },
+    password: 'bob',
   },
 ])
 
@@ -38,10 +29,7 @@ User.create([
 def rand_user
   User.create(
     username: Faker::Superhero.unique.name,
-    password_authentication_attributes: {
-      password: 'bob',
-      password_confirmation: 'bob',
-    },
+    password: 'bob',
   )
 end
 

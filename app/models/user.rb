@@ -4,13 +4,13 @@ class User < ApplicationRecord
   after_initialize :set_slug_from_username
   validate :slug_must_be_unique
 
+  has_one :authentication
+
   has_many :posts
   has_many :notifications
   has_many :flags
   has_many :topics
   has_many :user_topics, dependent: :destroy
-  has_one :password_authentication
-  accepts_nested_attributes_for :password_authentication
 
   has_one_attached :avatar_image
 
@@ -19,7 +19,10 @@ class User < ApplicationRecord
   end
 
   def password=(password)
-    puts "To set password"
+    if !self.authentication
+      self.authentication = Authentication.create(user: self)
+    end
+    self.authentication.password = password
   end
 
   def set_slug_from_username

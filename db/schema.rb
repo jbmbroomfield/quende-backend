@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_042022) do
+ActiveRecord::Schema.define(version: 2022_02_05_050130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,13 @@ ActiveRecord::Schema.define(version: 2022_02_05_042022) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "authentications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_authentications_on_user_id"
   end
 
   create_table "flags", force: :cascade do |t|
@@ -74,11 +81,11 @@ ActiveRecord::Schema.define(version: 2022_02_05_042022) do
   end
 
   create_table "password_authentications", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_password_authentications_on_user_id"
+    t.bigint "authentication_id", null: false
+    t.index ["authentication_id"], name: "index_password_authentications_on_authentication_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -158,10 +165,11 @@ ActiveRecord::Schema.define(version: 2022_02_05_042022) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "authentications", "users"
   add_foreign_key "flags", "posts"
   add_foreign_key "flags", "users"
   add_foreign_key "notifications", "users"
-  add_foreign_key "password_authentications", "users"
+  add_foreign_key "password_authentications", "authentications"
   add_foreign_key "posts", "topics"
   add_foreign_key "posts", "users"
   add_foreign_key "subsections", "sections"
