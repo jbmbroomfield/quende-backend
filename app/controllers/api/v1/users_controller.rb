@@ -25,6 +25,24 @@ class Api::V1::UsersController < ApplicationController
 		end
 	end
 
+  def login
+    user = User.find_by(username: user_login_params[:username])
+		password = user_login_params[:password]
+    if user && user.authenticate(password: password)
+      if current_user && current_user.guest
+        current_user.destroy
+      end
+			token = encode_token({ user_id: user.id })
+	    render json: { user: UserSerializer.new(user), jwt: token }, status: :ok
+    else
+      render json: {
+        errors: {
+          error: 'Invalid username or password.'
+        }
+      }, status: :unauthorized
+    end
+  end
+
 	def index
 		render_all
 	end
@@ -64,6 +82,13 @@ class Api::V1::UsersController < ApplicationController
 			:email_address,
 			:password,
 		)
+	end
+
+  def user_login_params
+    params.require(:user).permit(
+      :username,
+      :password,
+    )
 	end
 
 	def user_update_params

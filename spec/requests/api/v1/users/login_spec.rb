@@ -1,5 +1,5 @@
 require "rails_helper"
-require "requests/api/v1/auth/login_spec_helper"
+require "requests/api/v1/users/login_spec_helper"
 
 url = "/api/v1/login"
 
@@ -8,7 +8,7 @@ RSpec.describe "Api::V1::Auth", type: :request do
 
     it "returns http create and a jwt token" do
 			post url, params: login_success_body
-			expect(response).to have_http_status(:success)
+			expect(response).to have_http_status(:ok)
 			expect(jwt).to eq(user1_jwt)
 			attributes = json[:user][:data][:attributes]
 			expect(attributes).to eq(user1_attributes)

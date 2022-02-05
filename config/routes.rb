@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 			patch '/current_user', to: 'users#update'
 			resources :users, only: [:create, :index]
 			get 'users/:user_slug', to: 'users#show'
-			post '/login', to: 'auth#create'
+			post '/login', to: 'users#login'
       		post '/guest-login', to: 'auth#guest_login'
 			
 			get '/profile', to: 'users#profile'

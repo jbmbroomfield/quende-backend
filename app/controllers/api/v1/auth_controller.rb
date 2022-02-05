@@ -1,21 +1,5 @@
 class Api::V1::AuthController < ApplicationController
 
-  def create
-    user = User.find_by(username: user_login_params[:username])
-    if user && user.password_authenticate(user_login_params[:password_authentication_attributes][:password])
-      if current_user && current_user.account_level == 'guest'
-        current_user.destroy
-      end
-      render_user(user)
-    else
-      render json: {
-        errors: {
-          error: 'Invalid username or password.'
-        }
-      }, status: :unauthorized
-    end
-  end
-
   def guest_login
     if !current_user || current_user.account_level != 'guest'
       user = User.create(account_level: 'guest')
