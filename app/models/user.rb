@@ -5,8 +5,8 @@ class User < ApplicationRecord
 
   validate :slug_must_be_unique
 
-  has_one :authentication
-  has_one :email
+  has_one :authentication, dependent: :delete
+  has_one :email, dependent: :delete
 
   has_many :posts
   has_many :notifications
@@ -15,6 +15,11 @@ class User < ApplicationRecord
   has_many :user_topics, dependent: :destroy
 
   has_one_attached :avatar_image
+
+  def destroy_dependents
+    authentication && authentication.destroy
+    email && email.destroy
+  end
 
   def create_authentication
     if !authentication

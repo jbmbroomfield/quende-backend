@@ -8,6 +8,7 @@ class Api::V1::UsersController < ApplicationController
 			@token = encode_token(user_id: user.id)
 			render_json(user, status: :created)
 		else
+			user.destroy_dependents
 			if user.errors.full_messages.include?("Slug must be unique")
 				render json: {
 					errors: {

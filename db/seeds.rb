@@ -12,14 +12,17 @@ User.create([
   {
     username: 'Jim',
     password: 'bob',
+    email_address: 'jim@mail.com',
   },
   {
     username: 'Alice',
     password: 'bob',
+    email_address: 'alice@mail.com',
   },
   {
     username: 'Bob',
     password: 'bob',
+    email_address: 'bob@mail.com',
   },
 ])
 
@@ -30,6 +33,7 @@ def rand_user
   User.create(
     username: Faker::Superhero.unique.name,
     password: 'bob',
+    email_address: 'hi@mail.com'
   )
 end
 
