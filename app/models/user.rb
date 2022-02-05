@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   after_initialize :set_slug_from_username
+
   validate :slug_must_be_unique
 
   has_one :authentication
@@ -14,15 +15,22 @@ class User < ApplicationRecord
 
   has_one_attached :avatar_image
 
+  def create_authentication
+    if !authentication
+      self.authentication = Authentication.create(user: self)
+    end
+  end
+
+  def authenticate(params)
+    authentication.authenticate(params)
+  end
+
   def email_address=(email_address)
     puts "To set email address"
   end
 
   def password=(password)
-    if !self.authentication
-      self.authentication = Authentication.create(user: self)
-    end
-    self.authentication.password = password
+    create_authentication && authentication.password = password
   end
 
   def set_slug_from_username
