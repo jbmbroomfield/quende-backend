@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   include Rails.application.routes.url_helpers
 
+  after_initialize :set_slug_from_username
+  validate :slug_must_be_unique
+
   has_many :posts
   has_many :notifications
   has_many :flags
@@ -10,22 +13,22 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :password_authentication
 
   has_one_attached :avatar_image
-	
-  before_create do
-    if !self.slug
-      initial_slug = username ? username.gsub(/_/, '-').parameterize : 'guest'
-      slug = initial_slug
-      number = 1
-      loop do
-        users = User.where(slug: slug)
-        if users.count > 0
-          number += 1
-          slug = initial_slug + "-#{number}"
-        else
-          break
-        end
-      end
-      self.slug = slug
+
+  def email_address=(email_address)
+    puts "To set email address"
+  end
+
+  def password=(password)
+    puts "To set password"
+  end
+
+  def set_slug_from_username
+    self.slug = username.gsub(/_/, '-').parameterize
+  end
+
+  def slug_must_be_unique
+    if User.where(slug: self.slug).count > 0
+      errors.add(:slug, "must be unique")
     end
   end
 
