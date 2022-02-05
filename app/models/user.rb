@@ -6,6 +6,7 @@ class User < ApplicationRecord
   validate :slug_must_be_unique
 
   has_one :authentication
+  has_one :email
 
   has_many :posts
   has_many :notifications
@@ -26,7 +27,11 @@ class User < ApplicationRecord
   end
 
   def email_address=(email_address)
-    puts "To set email address"
+    if !email
+      self.email = Email.create(user: self, address: email_address)
+      return
+    end
+    self.email.address = email_address
   end
 
   def password=(password)

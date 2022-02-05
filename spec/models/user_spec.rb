@@ -6,10 +6,21 @@ RSpec.describe User, type: :model do
   it 'can be created with a password' do
     user = User.new(user_create_with_password_successful_params)
     expect(user.save).to eq(true)
+  end
+
+  it 'sets up the password_authentication correctly' do
+    user = User.new(user_create_with_password_successful_params)
     expect(user.authentication).not_to be(nil)
     expect(user.authentication.password_authentication).not_to be(nil)
     expect(user.authenticate(password: user_create_with_password_successful_params[:password])).to eq(true)
     expect(user.authenticate(password: 'wrong-password')).to eq(false)
+  end
+
+  it 'sets up the email correctly' do
+    user = User.new(user_create_with_password_successful_params)
+    expect(user.email).not_to be(nil)
+    expect(user.email.confirmed).to eq(false)
+    expect(user.email.address).to eq(user_create_with_password_successful_params[:email_address])
   end
 
   it 'requires unique slugs' do
