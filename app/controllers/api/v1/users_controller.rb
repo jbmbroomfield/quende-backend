@@ -3,36 +3,22 @@ class Api::V1::UsersController < ApplicationController
 	before_action :require_login, only: [:update, :upload_avatar]
 
 	def create
-		password = user_params[:password_authentication_attributes][:password]
-		password_confirmation = user_params[:password_authentication_attributes][:password_confirmation]
-		
-		if password != password_confirmation
-			render json: {
-				errors: {
-					password: "",
-					password_confirmation: "Passwords do not match."
-				}
-			}, status: :not_acceptable
-			return
-		end
-
-		slug = user_params[:username].gsub(/_/, '-').parameterize
-		slug_users = User.where(slug: slug)
-		if slug_users.count > 0
-			render json: {
-				errors: {
-					username: "Username unavailable."
-				}
-			}, status: :not_acceptable
-			return
-		end
-
 		user = User.create(user_params)
 		if user.valid?
 			@token = encode_token(user_id: user.id)
 			render_json(user, status: :created)
 		else
-			failed_to_create(user)
+			if user.errors.full_messages.include?("Slug must be unique")
+				render json: {
+					errors: {
+						username: "Username unavailable."
+					}
+				}, status: :not_acceptable
+			else
+				render json: {
+					message: "User not created."
+				}, status: :internal_server_error
+			end
 		end
 	end
 
@@ -72,14 +58,8 @@ class Api::V1::UsersController < ApplicationController
 	def user_params
 		params.require(:user).permit(
 			:username,
-			:email,
-			:time_zone,
-			:show_ignored,
-			# :avatar_image,
-			password_authentication_attributes: [
-				:password,
-				:password_confirmation
-			]
+			:email_address,
+			:password,
 		)
 	end
 

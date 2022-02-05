@@ -1,7 +1,7 @@
 def user_create_successful_body
   {
     user: {
-      username: "Test User",
+      username: "Test Request Create User",
       password: "test-pass",
       email_address: "test@email.com"
     }
@@ -10,8 +10,8 @@ end
 
 def user_create_expected_attributes
   {
-    username: "Test User",
-    slug: "test-user",
+    username: "Test Request Create User",
+    slug: "test-request-create-user",
     avatar: nil,
   }
 end

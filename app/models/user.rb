@@ -43,7 +43,7 @@ class User < ApplicationRecord
   end
 
   def slug_must_be_unique
-    if User.where(slug: self.slug).count > 0
+    if User.where(slug: slug).where.not(id: id).count > 0
       errors.add(:slug, "must be unique")
     end
   end
