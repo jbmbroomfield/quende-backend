@@ -33,7 +33,7 @@ def json
 end
 
 def data
-  json && json[:data]
+  json && (json[:data] || json[:user][:data])
 end
 
 def attributes

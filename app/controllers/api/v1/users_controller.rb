@@ -49,11 +49,16 @@ class Api::V1::UsersController < ApplicationController
 
 	def show
 		user = User.find_by(slug: params[:user_slug])
-		render_object(user)
+		if user
+			render json: UserSerializer.new(user), status: :ok
+		else
+			render json: { errors: { slug: "User not found." } }, status: :not_found
+		end
 	end
 
 	def current
 		if current_user
+			token = encode_token({ user_id: current_user.id })
 	    render json: { user: UserSerializer.new(current_user), jwt: token }, status: :ok
 		else
 			user = User.create_guest

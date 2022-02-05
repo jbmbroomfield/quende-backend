@@ -3,7 +3,7 @@ require "requests/api/v1/users/login_spec_helper"
 
 url = "/api/v1/login"
 
-RSpec.describe "Api::V1::Auth", type: :request do
+RSpec.describe "Api::V1::Users", type: :request do
   describe "POST /login" do
 
     it "returns http create and a jwt token" do
