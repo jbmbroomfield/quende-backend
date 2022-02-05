@@ -9,7 +9,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     it "creates and returns a new user" do
       user_count = User.count
       post url, params: user_create_successful_body
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(:created)
       expect(attributes).to eq(user_create_expected_attributes)
       expect(User.count).to eq(user_count + 1)
     end

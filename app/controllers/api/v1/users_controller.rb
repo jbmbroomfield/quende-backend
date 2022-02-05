@@ -8,7 +8,7 @@ class Api::V1::UsersController < ApplicationController
 			user.email_address = user_params[:email_address]
 			user.password = user_params[:password]
 			@token = encode_token(user_id: user.id)
-			render_json(user, status: :created)
+			render json: UserSerializer.new(user), status: :created
 		else
 			# user.destroy_dependents
 			if user.errors.full_messages.include?("Slug must be unique")
@@ -44,7 +44,7 @@ class Api::V1::UsersController < ApplicationController
 		if current_user
 			render_json(current_user)
 		else
-			user = User.create(account_level: 'guest')
+			user = User.create_guest
 			token = encode_token({ user_id: user.id })
 			render json: { user: UserSerializer.new(user), jwt: token }, status: :accepted
 		end

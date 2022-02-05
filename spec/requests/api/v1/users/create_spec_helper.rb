@@ -13,6 +13,7 @@ def user_create_expected_attributes
     username: "Test Request Create User",
     slug: "test-request-create-user",
     avatar: nil,
+    guest: false,
   }
 end
 

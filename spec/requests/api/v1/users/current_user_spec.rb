@@ -12,9 +12,9 @@ RSpec.describe "Api::V1::Auth", type: :request do
       expect(jwt.length).to eq(84)
       attributes = json[:user][:data][:attributes]
       expect(attributes).to eq({
-        username: nil,
-        slug: "guest",
-        account_level: "guest",
+        username: "Guest 1",
+        slug: "guest-1",
+        guest: true,
         avatar: nil,
       })
     end
