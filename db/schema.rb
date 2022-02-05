@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_03_092035) do
+ActiveRecord::Schema.define(version: 2022_02_05_035944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,16 +150,11 @@ ActiveRecord::Schema.define(version: 2022_02_03_092035) do
 
   create_table "users", force: :cascade do |t|
     t.string "username"
-    t.string "email"
     t.string "avatar"
     t.string "account_level", default: "member"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "time_zone", default: "UTC"
-    t.integer "page_size", default: 50
     t.string "slug"
-    t.boolean "guest_data", default: false
-    t.boolean "show_ignored"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
