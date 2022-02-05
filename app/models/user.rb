@@ -29,12 +29,6 @@ class User < ApplicationRecord
     end
   end
 
-  before_save do
-    if self.account_level == 'guest' && !self.guest_data && self.username
-      self.guest_data = true
-    end
-  end
-
   after_save do
     if self.account_level != 'guest'
       MainChannel.broadcast_update

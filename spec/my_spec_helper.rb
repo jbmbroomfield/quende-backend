@@ -47,7 +47,6 @@ end
 def user1_attributes
   {
     username: user1.username,
-    time_zone: user1.time_zone,
     slug: user1.slug,
     account_level: user1.account_level,
     avatar: nil,

@@ -11,7 +11,6 @@ Faker::UniqueGenerator.clear
 User.create([
   {
     username: 'Jim',
-    email: 'jimbroomy@hotmail.com',
     account_level: 'admin',
     password_authentication_attributes: {
       password: 'bob',
@@ -20,7 +19,6 @@ User.create([
   },
   {
     username: 'Alice',
-    email: 'alice@alice.com',
     account_level: 'user',
     password_authentication_attributes: {
       password: 'bob',
@@ -29,7 +27,6 @@ User.create([
   },
   {
     username: 'Bob',
-    email: 'bob@bob.com',
     account_level: 'user',
     password_authentication_attributes: {
       password: 'bob',
@@ -44,7 +41,6 @@ User.create([
 def rand_user
   User.create(
     username: Faker::Superhero.unique.name,
-    email: 'email@mail.com',
     account_level: 'user',
     password_authentication_attributes: {
       password: 'bob',

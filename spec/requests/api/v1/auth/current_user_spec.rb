@@ -13,7 +13,6 @@ RSpec.describe "Api::V1::Auth", type: :request do
       attributes = json[:user][:data][:attributes]
       expect(attributes).to eq({
         username: nil,
-        time_zone: "UTC",
         slug: "guest",
         account_level: "guest",
         avatar: nil,
