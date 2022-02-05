@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       password_authentication_count = PasswordAuthentication.count
       email_count = Email.count
       post url, params: user_create_existing_username_body
-      expect(response).to have_http_status(:not_acceptable)
+      expect(response).to have_http_status(:forbidden)
       expect(json).to eq({
         errors: {
           username: "Username unavailable."

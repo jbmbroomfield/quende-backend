@@ -16,7 +16,7 @@ class Api::V1::UsersController < ApplicationController
 					errors: {
 						username: "Username unavailable."
 					}
-				}, status: :not_acceptable
+				}, status: :forbidden
 			else
 				render json: {
 					message: "User not created."
@@ -54,11 +54,11 @@ class Api::V1::UsersController < ApplicationController
 
 	def current
 		if current_user
-			render_json(current_user)
+	    render json: { user: UserSerializer.new(current_user), jwt: token }, status: :ok
 		else
 			user = User.create_guest
 			token = encode_token({ user_id: user.id })
-			render json: { user: UserSerializer.new(user), jwt: token }, status: :accepted
+			render json: { user: UserSerializer.new(user), jwt: token }, status: :ok
 		end
 	end
 
@@ -83,19 +83,6 @@ class Api::V1::UsersController < ApplicationController
       :username,
       :password,
     )
-	end
-
-	def user_update_params
-		params.require(:user).permit(
-			:email,
-			:time_zone,
-			:page_size,
-			:show_ignored,
-			password_authentication_attributes: [
-				:password,
-				:password_confirmation
-			]
-		)
 	end
 
 end
