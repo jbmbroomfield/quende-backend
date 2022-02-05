@@ -52,12 +52,6 @@ class Api::V1::UsersController < ApplicationController
 		render_object(user)
 	end
 
-	def update
-		user = current_user
-		user.update(user_update_params)
-		render_object(user)
-	end
-
 	def current
 		if current_user
 			render_json(current_user)
