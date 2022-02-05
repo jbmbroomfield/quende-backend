@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_050130) do
+ActiveRecord::Schema.define(version: 2022_02_05_053506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,15 @@ ActiveRecord::Schema.define(version: 2022_02_05_050130) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_authentications_on_user_id"
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "address", null: false
+    t.boolean "confirmed", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_emails_on_user_id"
   end
 
   create_table "flags", force: :cascade do |t|
@@ -166,6 +175,7 @@ ActiveRecord::Schema.define(version: 2022_02_05_050130) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "authentications", "users"
+  add_foreign_key "emails", "users"
   add_foreign_key "flags", "posts"
   add_foreign_key "flags", "users"
   add_foreign_key "notifications", "users"
