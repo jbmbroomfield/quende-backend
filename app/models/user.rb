@@ -103,7 +103,15 @@ class User < ApplicationRecord
   end
 
   def self.create_guest
-    username = "Guest #{self.guests.count + 1}"
+    guest_number = self.guests.count + 1
+    loop do
+      if User.where(slug: "guest-#{guest_number}").count == 0
+        break
+      else
+        guest_number += 1
+      end
+    end
+    username = "Guest #{guest_number}"
     self.create(username: username, guest: true)
   end
 
