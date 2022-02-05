@@ -44,7 +44,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
 	def index
-		render_all
+		render json: UserSerializer.new(User.members), status: :ok
 	end
 
 	def show

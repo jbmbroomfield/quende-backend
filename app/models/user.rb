@@ -16,6 +16,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar_image
 
+  scope :members, -> { where(guest: false) }
   scope :guests, -> { where(guest: true) }
 
   def create_authentication

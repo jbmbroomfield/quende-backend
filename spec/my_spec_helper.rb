@@ -2,6 +2,10 @@ def user1
   User.find_by(username: "Jim")
 end
 
+def user2
+  User.find_by(username: "Alice")
+end
+
 def user1_password
   "bob"
 end
@@ -48,6 +52,15 @@ def user1_attributes
   {
     username: user1.username,
     slug: user1.slug,
+    avatar: nil,
+    guest: false
+  }
+end
+
+def user2_attributes
+  {
+    username: user2.username,
+    slug: user2.slug,
     avatar: nil,
     guest: false
   }
