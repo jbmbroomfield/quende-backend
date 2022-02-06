@@ -30,6 +30,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     it "returns current user attributes when a jwt is provided" do
       get url, headers: user1_headers
       expect(response).to have_http_status(:ok)
+      attributes = json[:user][:data][:attributes]
       expect(attributes).to eq(user1_attributes)
     end
   

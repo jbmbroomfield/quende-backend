@@ -38,8 +38,7 @@ class Api::V1::UsersController < ApplicationController
 
 	def current
 		if current_user
-			token = encode_token({ user_id: current_user.id })
-	    render json: { user: UserSerializer.new(current_user), jwt: token }, status: :ok
+	    render json: { user: UserSerializer.new(current_user) }, status: :ok
 		else
 			user = User.create_guest
 			token = encode_token({ user_id: user.id })
