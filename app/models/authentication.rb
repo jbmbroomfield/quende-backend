@@ -13,11 +13,11 @@ class Authentication < ApplicationRecord
   end
 
   def password=(password)
-    if !password_authentication
+    if password_authentication
+      password_authentication.password = password
+    else
       self.password_authentication = PasswordAuthentication.create(authentication: self, password: password)
-      return
     end
-    password_authentication.password = password
   end
 
 end

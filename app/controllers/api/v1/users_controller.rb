@@ -3,25 +3,11 @@ class Api::V1::UsersController < ApplicationController
 	before_action :require_login, only: [:update, :upload_avatar]
 
 	def create
-		user = User.create(username: user_params[:username])
+		user = User.create_member(user_params)
 		if user.valid?
-			user.email_address = user_params[:email_address]
-			user.password = user_params[:password]
-			@token = encode_token(user_id: user.id)
 			render json: UserSerializer.new(user), status: :created
 		else
-			# user.destroy_dependents
-			if user.errors.full_messages.include?("Slug must be unique")
-				render json: {
-					errors: {
-						username: "Username unavailable."
-					}
-				}, status: :forbidden
-			else
-				render json: {
-					message: "User not created."
-				}, status: :internal_server_error
-			end
+			render_user_not_created(user)
 		end
 	end
 
@@ -29,17 +15,11 @@ class Api::V1::UsersController < ApplicationController
     user = User.find_by(username: user_login_params[:username])
 		password = user_login_params[:password]
     if user && user.authenticate(password: password)
-      if current_user && current_user.guest
-        current_user.destroy
-      end
+			User.destroy_guest(current_user)
 			token = encode_token({ user_id: user.id })
 	    render json: { user: UserSerializer.new(user), jwt: token }, status: :ok
     else
-      render json: {
-        errors: {
-          error: 'Invalid username or password.'
-        }
-      }, status: :unauthorized
+			render_invalid_username_or_password
     end
   end
 
@@ -52,7 +32,7 @@ class Api::V1::UsersController < ApplicationController
 		if user
 			render json: UserSerializer.new(user), status: :ok
 		else
-			render json: { errors: { slug: "User not found." } }, status: :not_found
+			render_user_not_found
 		end
 	end
 
@@ -88,6 +68,36 @@ class Api::V1::UsersController < ApplicationController
       :username,
       :password,
     )
+	end
+
+	def render_user_not_created(user)
+		if user.errors.full_messages.include?("Slug must be unique")
+			render json: {
+				errors: {
+					username: "Username unavailable."
+				}
+			}, status: :forbidden
+		else
+			render json: {
+				message: "User not created."
+			}, status: :internal_server_error
+		end
+	end
+
+	def render_invalid_username_or_password
+		render json: {
+			errors: {
+				error: 'Invalid username or password.'
+			}
+		}, status: :unauthorized
+	end
+
+	def render_user_not_found
+		render json: {
+			errors: {
+				slug: "User not found."
+			}
+		}, status: :not_found
 	end
 
 end

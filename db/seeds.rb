@@ -77,18 +77,18 @@ def rand_section
   end
 end
 
-7.times do
-  rand_user
-end
+# 7.times do
+#   rand_user
+# end
 
-3.times do
-  rand_section
-end
+# 3.times do
+#   rand_section
+# end
 
-topic = Topic.first
-180.times do
-  rand_post(topic)
-end
+# topic = Topic.first
+# 180.times do
+#   rand_post(topic)
+# end
 
 # who_can_views = ['anyone', 'url', 'add']
 # who_can_posts = ['anyone', 'password', 'add']
