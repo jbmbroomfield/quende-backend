@@ -13,13 +13,38 @@ class Forum < ApplicationRecord
   end
 
   def user=(user)
-    user_forum = user_forums.find_or_initialize_by(user: user)
-    user_forum.status = 'admin'
-    user_forum.save
+    make_super_admin(user)
+  end
+
+  def user_forum(user)
+    user_forums.find_or_initialize_by(user: user)
+  end
+
+  def super_admins
+    user_forums.super_admins.map { |uf| uf.user}
   end
 
   def admins
-    user_forums.where(status: 'admin'). map { |uf| uf.user}
+    user_forums.admins.map { |uf| uf.user}
   end
 
+  def super_admin?(user)
+    user_forum(user).super_admin?
+  end
+
+  def admin?(user)
+    user_forum(user).admin?
+  end
+
+  def make_super_admin(user)
+    user_forum(user).make_super_admin
+  end
+
+  def make_admin(user)
+    user_forum(user).make_admin
+  end
+
+  def remove_admin(user)
+    user_forum(user).remove_admin
+  end
 end
