@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include Rails.application.routes.url_helpers
+  include SlugUniqueHelper
 
   after_initialize :set_slug_from_username
 
@@ -20,13 +21,7 @@ class User < ApplicationRecord
   scope :guests, -> { where(guest: true) }
 
   def set_slug_from_username
-    self.slug = username.gsub(/_/, '-').parameterize
-  end
-
-  def slug_must_be_unique
-    if User.where(slug: slug).where.not(id: id).count > 0
-      errors.add(:slug, "must be unique")
-    end
+    self.set_slug_from(username)
   end
   
   def email_address=(email_address)

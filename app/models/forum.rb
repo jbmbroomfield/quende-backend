@@ -1,11 +1,16 @@
 class Forum < ApplicationRecord
+  include SlugUniqueHelper
 
-  include SlugHelper
+  after_initialize :set_slug_from_title
+
+  validate :slug_must_be_unique
 
   has_many :sections
   has_many :user_forums
 
-  before_create :set_slug_from_title
+  def set_slug_from_title
+    set_slug_from(title)
+  end
 
   def user=(user)
     user_forum = user_forums.find_or_initialize_by(user: user)
