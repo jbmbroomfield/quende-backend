@@ -74,7 +74,7 @@ class Api::V1::UsersController < ApplicationController
 		if user.errors.full_messages.include?("Slug must be unique")
 			render json: {
 				errors: {
-					username: "Username unavailable."
+					"register-username-input": "Username unavailable."
 				}
 			}, status: :forbidden
 		else

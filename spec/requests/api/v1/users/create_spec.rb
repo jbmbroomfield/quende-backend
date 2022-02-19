@@ -22,7 +22,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(response).to have_http_status(:forbidden)
       expect(json).to eq({
         errors: {
-          username: "Username unavailable."
+          "register-username-input": "Username unavailable."
         }
       })
       expect(Authentication.count).to eq(authentication_count)
