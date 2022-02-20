@@ -76,8 +76,20 @@ def forum1
   Forum.first
 end
 
+def forum2
+  Forum.all[1]
+end
+
 def forum1_attributes
   {
-    title: forum1.title
+    title: forum1.title,
+    slug: forum1.slug,
+  }
+end
+
+def forum2_attributes
+  {
+    title: forum2.title,
+    slug: forum2.slug,
   }
 end
