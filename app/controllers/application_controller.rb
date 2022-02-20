@@ -37,20 +37,36 @@ class ApplicationController < ActionController::API
   end
 
   def require_login
-    render json: { message: 'Please log in.' }, status: :unauthorized unless logged_in?
+    render json: {
+      errors: {
+        error: 'Please log in.'
+      }
+    }, status: :unauthorized unless logged_in?
   end
 
   def require_admin
-    render json: { message: 'Unauthorized' }, status: :unauthorized unless admin?
+    render json: {
+      errors: {
+        error: 'Unauthorized'
+      }
+     }, status: :unauthorized unless admin?
   end
 
   def require_viewer
     url = "forum/#{params[:subsection_slug]}/#{params[:topic_slug]}"
-    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_view(current_user, url)
+    render json: {
+      errors: {
+        error: 'Unauthorized'
+      }
+     }, status: :unauthorized unless !topic || topic.can_view(current_user, url)
   end
 
   def require_poster
-    render json: { message: 'Unauthorized' }, status: :unauthorized unless !topic || topic.can_post(current_user, params[:password])
+    render json: {
+      errors: {
+        error: 'Unauthorized'
+      }
+     }, status: :unauthorized unless !topic || topic.can_post(current_user, params[:password])
   end
 
   def subsection

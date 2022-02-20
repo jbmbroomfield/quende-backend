@@ -68,7 +68,9 @@ end
 
 def require_login_response
   {
-    message: "Please log in."
+    errors: {
+      error: "Please log in."
+    }
   }
 end
 
