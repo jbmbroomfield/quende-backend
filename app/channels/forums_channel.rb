@@ -1,4 +1,4 @@
-class AllForumsChannel < ApplicationCable::Channel
+class ForumsChannel < ApplicationCable::Channel
 
   def subscribed
     stream_from 'all_forums'

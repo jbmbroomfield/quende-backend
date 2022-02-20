@@ -10,4 +10,8 @@ module SlugUniqueHelper
     end
   end
 
+  def set_slug_from_title
+    set_slug_from(title)
+  end
+
 end

@@ -8,10 +8,10 @@ class Forum < ApplicationRecord
   has_many :sections
   has_many :user_forums
 
-  after_save :broadcast_update
+  after_commit :broadcast_update
 
   def broadcast_update
-    AllForumsChannel.update
+    ForumsChannel.update
   end
 
   def set_slug_from_title
