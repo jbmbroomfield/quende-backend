@@ -79,7 +79,9 @@ class Api::V1::UsersController < ApplicationController
 			}, status: :forbidden
 		else
 			render json: {
-				message: "User not created."
+				errors: {
+					error: "User not created."
+				}
 			}, status: :internal_server_error
 		end
 	end

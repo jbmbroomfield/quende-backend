@@ -1,6 +1,5 @@
 require "rails_helper"
-require "requests/api/v1/users/show_spec_helper"
-
+require "requests/api/v1/users/helpers/show_spec_helper"
 
 RSpec.describe "Api::V1::Users", type: :request do
   describe "GET /show" do

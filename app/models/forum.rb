@@ -15,9 +15,14 @@ class Forum < ApplicationRecord
   def user=(user)
     make_super_admin(user)
   end
+  
+  def user_slug=(user_slug)
+    user = User.find_by(slug: user_slug)
+    user && self.user = user
+  end
 
   def user_forum(user)
-    user_forums.find_or_initialize_by(user: user)
+    user_forums.find_or_create_by(user: user)
   end
 
   def super_admins

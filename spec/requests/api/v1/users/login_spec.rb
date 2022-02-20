@@ -1,5 +1,5 @@
 require "rails_helper"
-require "requests/api/v1/users/login_spec_helper"
+require "requests/api/v1/users/helpers/login_spec_helper"
 
 url = "/api/v1/login"
 

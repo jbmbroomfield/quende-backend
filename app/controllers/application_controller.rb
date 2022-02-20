@@ -29,7 +29,7 @@ class ApplicationController < ActionController::API
   end
 
   def logged_in?
-    !!current_user || current_user.account_level == 'guest'
+    current_user && !current_user.guest
   end
   
   def admin?
@@ -37,7 +37,7 @@ class ApplicationController < ActionController::API
   end
 
   def require_login
-    render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
+    render json: { message: 'Please log in.' }, status: :unauthorized unless logged_in?
   end
 
   def require_admin

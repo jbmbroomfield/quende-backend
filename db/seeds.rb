@@ -26,7 +26,11 @@ User.create([
   },
 ])
 
-
+Forum.create([
+  {title: 'First Forum'},
+  {title: 'Second Forum'},
+  {title: 'Third Forum'},
+])
 
 
 def rand_user

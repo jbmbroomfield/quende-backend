@@ -65,3 +65,19 @@ def user2_attributes
     guest: false
   }
 end
+
+def require_login_response
+  {
+    message: "Please log in."
+  }
+end
+
+def forum1
+  Forum.first
+end
+
+def forum1_attributes
+  {
+    title: forum1.title
+  }
+end

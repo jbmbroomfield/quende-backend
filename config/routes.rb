@@ -11,6 +11,12 @@ Rails.application.routes.draw do
 			get 'users/:user_slug', to: 'users#show'
 			post '/login', to: 'users#login'
 			
+			resources :forums, only: [:create, :index]
+			get 'forums/:forum_slug', to: 'forums#show'
+
+
+
+
 			get '/profile', to: 'users#profile'
 
 			resources :sections, only: [:create, :index, :show] do
