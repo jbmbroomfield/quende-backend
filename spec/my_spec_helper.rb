@@ -86,6 +86,7 @@ def forum1_attributes
   {
     title: forum1.title,
     slug: forum1.slug,
+    description: forum1.description,
   }
 end
 
@@ -93,5 +94,6 @@ def forum2_attributes
   {
     title: forum2.title,
     slug: forum2.slug,
+    description: forum2.description,
   }
 end

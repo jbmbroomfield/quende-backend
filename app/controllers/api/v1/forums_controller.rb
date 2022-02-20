@@ -29,7 +29,8 @@ class Api::V1::ForumsController < ApplicationController
 
   def forum_params
     params.require(:forum).permit(
-      :title
+      :title,
+      :description
     )
   end
 

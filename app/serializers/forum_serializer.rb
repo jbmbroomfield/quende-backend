@@ -2,6 +2,6 @@ class ForumSerializer
   
   include JSONAPI::Serializer
 
-  attributes :title, :slug
+  attributes :title, :slug, :description
 
 end
