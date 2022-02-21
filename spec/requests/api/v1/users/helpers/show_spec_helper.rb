@@ -14,7 +14,7 @@ def user_show_expected_attributes
   {
     username: user1.username,
     slug: user1.slug,
-    guest: false,
+    level: "member",
     avatar: nil
   }
 end

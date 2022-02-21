@@ -34,6 +34,7 @@ RSpec.describe User, type: :model do
     guest = User.create_guest
     expect(guest.username).to eq("Guest 1")
     expect(guest.slug).to eq("guest-1")
+    expect(guest.guest?).to eq(true)
     guest2 = User.create_guest
     expect(guest2.username).to eq("Guest 2")
     expect(guest2.slug).to eq("guest-2")

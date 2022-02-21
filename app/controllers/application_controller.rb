@@ -29,7 +29,7 @@ class ApplicationController < ActionController::API
   end
 
   def logged_in?
-    current_user && !current_user.guest
+    current_user && current_user.member?
   end
   
   def admin?

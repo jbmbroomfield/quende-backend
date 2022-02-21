@@ -17,8 +17,8 @@ class User < ApplicationRecord
 
   has_one_attached :avatar_image
 
-  scope :members, -> { where(guest: false) }
-  scope :guests, -> { where(guest: true) }
+  scope :members, -> { where.not(level: "guest") }
+  scope :guests, -> { where(level: "guest") }
 
   def set_slug_from_username
     self.set_slug_from(username)
@@ -65,7 +65,7 @@ class User < ApplicationRecord
   def self.create_member(params)
     username = params[:username]
     return false if !username
-    user = self.create(username: username)
+    user = self.create(username: username, level: 'member')
     if user.valid?
       password = params[:password]
       password && user.password = password
@@ -79,10 +79,35 @@ class User < ApplicationRecord
     guest_number = self.guests.count + 1
     guest = nil
     loop do
-      guest = self.create(username: "Guest #{guest_number}", guest: true)
+      guest = self.create(username: "Guest #{guest_number}", level: 'guest')
       guest.valid? ? break : guest_number += 1
     end
     guest
+  end
+
+  def guest?
+    level === 'guest'
+  end
+
+  def member?
+    !guest?
+  end
+
+  def super_admin?
+    level === 'super_admin'
+  end
+
+  def admin?
+    super_admin? || level === 'admin'
+  end
+
+  def authority
+    {
+      'guest': -1,
+      'member': 0,
+      'admin': 1,
+      'super_admin': 2,
+    }[level]
   end
 
   def self.destroy_guest(user)

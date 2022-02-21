@@ -14,7 +14,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(attributes).to eq({
         username: "Guest 1",
         slug: "guest-1",
-        guest: true,
+        level: "guest",
         avatar: nil,
       })
     end

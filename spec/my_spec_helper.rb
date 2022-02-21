@@ -53,7 +53,7 @@ def user1_attributes
     username: user1.username,
     slug: user1.slug,
     avatar: nil,
-    guest: false
+    level: "member",
   }
 end
 
@@ -62,7 +62,7 @@ def user2_attributes
     username: user2.username,
     slug: user2.slug,
     avatar: nil,
-    guest: false
+    level: "member",
   }
 end
 
