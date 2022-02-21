@@ -101,12 +101,24 @@ class User < ApplicationRecord
     super_admin? || level === 'admin'
   end
 
+  def make_super_admin
+    update(level: 'super_admin')
+  end
+
+  def make_admin
+    update(level: 'admin')
+  end
+
+  def remove_admin
+    update(level: 'member')
+  end
+
   def authority
     {
-      'guest': -1,
-      'member': 0,
-      'admin': 1,
-      'super_admin': 2,
+      'guest' => -1,
+      'member' => 0,
+      'admin' => 1,
+      'super_admin' => 2,
     }[level]
   end
 

@@ -3,28 +3,38 @@ class UserForum < ApplicationRecord
   belongs_to :user
   belongs_to :forum
 
-  scope :super_admins, -> { where(admin: 'super') }
-  scope :admins, -> { where(admin: ['super', 'admin']) }
+  scope :super_admins, -> { where(level: 'super_admin') }
+  scope :admins, -> { where(level: ['super_admin', 'admin']) }
 
 
   def super_admin?
-    admin === 'super'
+    authority > 1
   end
 
   def admin?
-    super_admin? || admin === 'admin'
+    authority > 0
   end
 
   def make_super_admin
-    update(admin: 'super')
+    update(level: 'super_admin')
   end
 
   def make_admin
-    update(admin: 'admin')
+    update(level: 'admin')
   end
 
   def remove_admin
-    update(admin: nil)
+    update(level: 'member')
+  end
+
+  def authority
+    return user.authority if user.authority < 0
+    return user.authority + 2 if user.authority > 0
+    {
+      'member' => 0,
+      'admin' => 1,
+      'super_admin' => 2,
+    }[level]
   end
 
 end

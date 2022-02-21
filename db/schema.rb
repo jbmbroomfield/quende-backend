@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_21_082302) do
+ActiveRecord::Schema.define(version: 2022_02_21_084615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -147,7 +147,7 @@ ActiveRecord::Schema.define(version: 2022_02_21_082302) do
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "admin"
+    t.string "level", default: "member"
     t.index ["forum_id"], name: "index_user_forums_on_forum_id"
     t.index ["user_id"], name: "index_user_forums_on_user_id"
   end
