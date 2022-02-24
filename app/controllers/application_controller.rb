@@ -36,6 +36,14 @@ class ApplicationController < ActionController::API
     logged_in? && current_user.admin?
   end
 
+  def require_user
+    render json: {
+      errors: {
+        slug: "Current user not found."
+      }
+    }, status: :not_found unless current_user
+  end
+
   def require_login
     render json: {
       errors: {

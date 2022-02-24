@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 			
 			resources :forums, only: [:create, :index]
 			get 'forums/:forum_slug', to: 'forums#show'
+			get 'user_forums/:forum_slug', to: 'user_forums#show'
 
 
 
