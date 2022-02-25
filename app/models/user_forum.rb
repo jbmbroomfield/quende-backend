@@ -6,6 +6,19 @@ class UserForum < ApplicationRecord
   scope :super_admins, -> { where(level: 'super_admin') }
   scope :admins, -> { where(level: ['super_admin', 'admin']) }
 
+  after_commit :broadcast_update
+
+  def broadcast_update
+    UserForumsChannel.update(self)
+  end
+
+  def user_slug
+    user.slug
+  end
+
+  def forum_slug
+    forum.slug
+  end
 
   def super_admin?
     authority > 1

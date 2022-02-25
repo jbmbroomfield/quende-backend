@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_one :authentication, dependent: :delete
   has_one :email, dependent: :delete
 
+  has_many :user_forums
+
   # has_many :posts
   # has_many :notifications
   # has_many :flags

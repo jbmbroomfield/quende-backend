@@ -2,6 +2,6 @@ class UserForumSerializer
 
   include JSONAPI::Serializer
 
-  attributes :level, :authority
+  attributes :forum_slug, :level, :authority
 
 end

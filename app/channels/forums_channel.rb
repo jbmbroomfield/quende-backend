@@ -1,16 +1,17 @@
 class ForumsChannel < ApplicationCable::Channel
 
   def subscribed
-    stream_from 'all_forums'
+    stream_from 'forums'
   end
 
   def self.broadcast(**params)
-    ActionCable.server.broadcast('all_forums', **params)
+    ActionCable.server.broadcast('forums', **params)
   end
 
-  def self.update
+  def self.update(forum)
     self.broadcast(
-      type: 'update'
+      type: 'update',
+      forum_slug: forum.slug,
     )
   end
 

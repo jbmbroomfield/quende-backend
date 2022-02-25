@@ -4,9 +4,6 @@ class UserChannel < ApplicationCable::Channel
         stream_from "user_#{params[:user_slug]}"
     end
 
-    def unsubscribed
-    end
-
     def self.broadcast(user, **params)
       ActionCable.server.broadcast("user_#{user.slug}", **params)
     end

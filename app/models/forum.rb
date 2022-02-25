@@ -11,7 +11,7 @@ class Forum < ApplicationRecord
   after_commit :broadcast_update
 
   def broadcast_update
-    ForumsChannel.update
+    ForumsChannel.update(self)
   end
 
   def set_slug_from_title

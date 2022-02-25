@@ -2,11 +2,14 @@ class Api::V1::UserForumsController < ApplicationController
 
   before_action :require_user
 
+  def index
+    render json: UserForumSerializer.new(current_user.user_forums), status: :ok
+  end
+
   def show
     forum = Forum.find_by(slug: params[:forum_slug])
     if forum
       user_forum = forum.user_forum(current_user)
-      p ['--uf--', user_forum.errors.full_messages]
       render json: UserForumSerializer.new(user_forum), status: :ok
     else
       render_forum_not_found
