@@ -37,4 +37,24 @@ RSpec.describe Forum, type: :model do
     expect(forum.admins.count).to eq(0)
   end
 
+  it 'can manage permissions' do
+    forum = Forum.create(title: 'Test Forum', description: 'A test forum')
+    forum.update_permissions(
+      view: -1,
+      post: 0,
+      create_topic: 1,
+    )
+    expect(forum.permissions['view']).to eq(-1)
+    expect(forum.permissions['post']).to eq(0)
+    expect(forum.permissions['create_topic']).to eq(1)
+    expect(forum.has_permission?('view', -1)).to eq(true)
+    expect(forum.has_permission?('post', -1)).to eq(false)
+    expect(forum.has_permission?('post', 1)).to eq(true)
+    expect(forum.has_permission?('create_topic', 0)).to eq(false)
+    expect(forum.has_permission?('create_topic', 1)).to eq(true)
+    expect(forum.can_view?(-1)).to eq(true)
+    expect(forum.can_create_topic?(0)).to eq(false)
+    expect(forum.can_create_topic?(1)).to eq(true)
+  end
+
 end

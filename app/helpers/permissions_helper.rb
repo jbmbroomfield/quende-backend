@@ -1,20 +1,23 @@
 module PermissionsHelper
-
-  def permissions
-    Permission.filter_by(class_name: self.class.name, object_id: self.id)
-  end
-
-  def get_permission(permission_type)
-    permissions.find_or_create_by(permission_type: permission_type)
-  end
-
-  def set_permission(permission_type, authority)
-    permission = get_permission(permission_type)
-    permission.update(authority: authority)
+  
+  def update_permissions(**new_permissions)
+    p ['---permissions', new_permissions, permissions, (permissions || {}).merge(new_permissions)]
+    update(permissions: (permissions || {}).merge(new_permissions))
   end
 
   def has_permission?(permission_type, authority)
-    authority >= get_permission(permission_type).authority
+    return false if !permissions[permission_type]
+    if authority.respond_to?(:authority)
+      authority = authority.authority
+    end
+    authority >= permissions[permission_type]
   end
-
+  
+  [:view, :url_view, :post, :password_post, :create_topic, :create_subsection, :create_section].each do |permission_type|
+    method_sym = :"can_#{permission_type}?"
+    define_method method_sym do |authority|
+      has_permission?(permission_type.to_s, authority)
+    end
+  end
+  
 end

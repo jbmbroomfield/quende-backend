@@ -13,6 +13,8 @@ class Api::V1::ForumsController < ApplicationController
   end
 
   def index
+    Forum.all.each do |forum|
+    end
     render json: ForumSerializer.new(Forum.all), status: :ok
   end
 
@@ -30,7 +32,8 @@ class Api::V1::ForumsController < ApplicationController
   def forum_params
     params.require(:forum).permit(
       :title,
-      :description
+      :description,
+      permissions: [:view, :url_view, :post, :password_post, :create_topic, :create_subsection, :create_section],
     )
   end
 

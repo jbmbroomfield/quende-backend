@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_081851) do
+ActiveRecord::Schema.define(version: 2022_02_26_045058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2022_02_25_081851) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "description"
+    t.json "permissions", default: {}
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -96,15 +97,6 @@ ActiveRecord::Schema.define(version: 2022_02_25_081851) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "authentication_id", null: false
     t.index ["authentication_id"], name: "index_password_authentications_on_authentication_id"
-  end
-
-  create_table "permissions", force: :cascade do |t|
-    t.bigint "owner_id", null: false
-    t.string "owner_class", null: false
-    t.string "authority", null: false
-    t.string "permission_type", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "posts", force: :cascade do |t|

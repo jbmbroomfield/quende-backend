@@ -1,5 +1,6 @@
 class Forum < ApplicationRecord
   include SlugUniqueHelper
+  include PermissionsHelper
 
   after_initialize :set_slug_from_title
 

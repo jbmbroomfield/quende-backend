@@ -12,6 +12,7 @@ def forum_create_expected_attributes
     title: "Test Request Create Forum",
     slug: "test-request-create-forum",
     description: "The best test forum.",
+    permissions: {},
   }
 end
 
