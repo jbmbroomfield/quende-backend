@@ -53,6 +53,7 @@ RSpec.describe Forum, type: :model do
     expect(forum.has_permission?('create_topic', 0)).to eq(false)
     expect(forum.has_permission?('create_topic', 1)).to eq(true)
     expect(forum.can_view?(-1)).to eq(true)
+    expect(forum.can_post?(-1)).to eq(false)
     expect(forum.can_create_topic?(0)).to eq(false)
     expect(forum.can_create_topic?(1)).to eq(true)
   end
