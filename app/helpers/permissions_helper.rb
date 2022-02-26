@@ -1,7 +1,6 @@
 module PermissionsHelper
   
   def update_permissions(**new_permissions)
-    p ['---permissions', new_permissions, permissions, (permissions || {}).merge(new_permissions)]
     update(permissions: (permissions || {}).merge(new_permissions))
   end
 
@@ -19,5 +18,5 @@ module PermissionsHelper
       has_permission?(permission_type.to_s, authority)
     end
   end
-  
+
 end
