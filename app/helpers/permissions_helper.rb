@@ -15,9 +15,7 @@ module PermissionsHelper
 
   def has_permission?(permission_type, authority)
     return false if !permissions[permission_type]
-    if authority.respond_to?(:authority)
-      authority = authority.authority
-    end
+    authority = authority.authority if authority.respond_to?(:authority)
     authority >= permissions[permission_type]
   end
 
