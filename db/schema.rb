@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_26_045058) do
+ActiveRecord::Schema.define(version: 2022_05_16_100730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,8 @@ ActiveRecord::Schema.define(version: 2022_02_26_045058) do
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "forum_id"
+    t.index ["forum_id"], name: "index_sections_on_forum_id"
   end
 
   create_table "subsections", force: :cascade do |t|
@@ -186,6 +188,7 @@ ActiveRecord::Schema.define(version: 2022_02_26_045058) do
   add_foreign_key "password_authentications", "authentications"
   add_foreign_key "posts", "topics"
   add_foreign_key "posts", "users"
+  add_foreign_key "sections", "forums"
   add_foreign_key "subsections", "sections"
   add_foreign_key "topics", "subsections"
   add_foreign_key "topics", "users"
