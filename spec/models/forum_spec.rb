@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'models/forum_spec_helper.rb'
+require 'models/helpers/forum_spec_helper.rb'
 
 RSpec.describe Forum, type: :model do
 
