@@ -125,7 +125,7 @@ class User < ApplicationRecord
   end
 
   def self.destroy_guest(user)
-    if user && user.guest
+    if user && user.level === 'guest'
       user.destroy
     end
   end
