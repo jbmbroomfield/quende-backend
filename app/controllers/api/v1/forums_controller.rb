@@ -13,9 +13,12 @@ class Api::V1::ForumsController < ApplicationController
   end
 
   def index
-    Forum.all.each do |forum|
-    end
-    render json: ForumSerializer.new(Forum.all), status: :ok
+    forums = Forum.all.map{ |forum| forum.to_svelte(current_user) }
+    json = {
+      success: true,
+      forums: forums,
+    }
+    render json: json, status: :ok
   end
 
   def show

@@ -11,6 +11,21 @@ class Forum < ApplicationRecord
 
   after_commit :broadcast_update
 
+  def to_svelte(user)
+    uf = user_forum(user)
+    {
+      id: self.id,
+      title: self.title,
+      slug: self.slug,
+      description: self.description,
+      permissions: self.permissions,
+      user_forum: {
+        level: uf.level,
+        authority: uf.authority,
+      }
+    }
+  end
+
   def broadcast_update
     ForumsChannel.update(self)
   end
