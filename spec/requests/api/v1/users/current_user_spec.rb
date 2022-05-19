@@ -9,9 +9,8 @@ RSpec.describe "Api::V1::Users", type: :request do
       get url
       expect(response).to have_http_status(:ok)
       expect(jwt).to be_a(String)
-      expect(jwt.length).to eq(84)
-      attributes = json[:user][:data][:attributes]
-      expect(attributes).to eq({
+      expect(jwt.length).to be > 50
+      expect(json[:user]).to eq({
         username: "Guest 1",
         slug: "guest-1",
         level: "guest",
@@ -22,16 +21,15 @@ RSpec.describe "Api::V1::Users", type: :request do
     it "supports multiple guests" do
       get url
       get url
-      expect(json[:user][:data][:attributes][:slug]).to eq('guest-2')
+      expect(json[:user][:slug]).to eq('guest-2')
       get url
-      expect(json[:user][:data][:attributes][:slug]).to eq('guest-3')
+      expect(json[:user][:slug]).to eq('guest-3')
     end
 
     it "returns current user attributes when a jwt is provided" do
       get url, headers: user1_headers
       expect(response).to have_http_status(:ok)
-      attributes = json[:user][:data][:attributes]
-      expect(attributes).to eq(user1_attributes)
+      expect(json).to eq(user1_attributes)
     end
   
   end
