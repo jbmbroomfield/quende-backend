@@ -11,7 +11,7 @@ class Forum < ApplicationRecord
 
   after_commit :broadcast_update
 
-  def to_svelte(user)
+  def json(user)
     uf = user_forum(user)
     {
       id: self.id,

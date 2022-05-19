@@ -31,7 +31,11 @@ class Api::V1::UsersController < ApplicationController
 	def show
 		user = User.find_by(slug: params[:user_slug])
 		if user
-			render json: UserSerializer.new(user), status: :ok
+			json = {
+				success: true,
+				user: user.json
+			}
+			render json: json, status: :ok
 		else
 			render_user_not_found
 		end

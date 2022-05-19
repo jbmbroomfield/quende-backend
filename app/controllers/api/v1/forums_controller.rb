@@ -13,7 +13,7 @@ class Api::V1::ForumsController < ApplicationController
   end
 
   def index
-    forums = Forum.all.map{ |forum| forum.to_svelte(current_user) }
+    forums = Forum.all.map{ |forum| forum.json(current_user) }
     json = {
       success: true,
       forums: forums,

@@ -22,6 +22,14 @@ class User < ApplicationRecord
   scope :members, -> { where.not(level: "guest") }
   scope :guests, -> { where(level: "guest") }
 
+  def json
+    {
+      username: username,
+      slug: slug,
+      level: level,
+    }
+  end
+
   def set_slug_from_username
     self.set_slug_from(username)
   end
