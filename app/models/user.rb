@@ -23,15 +23,17 @@ class User < ApplicationRecord
   scope :guests, -> { where(level: "guest") }
 
   def json(jwt=nil)
-    result = {
+    user = {
       username: username,
       slug: slug,
       level: level,
+      avatar: avatar,
     }
     if jwt
-      result[:jwt] = jwt
+      { user: user, jwt: jwt }
+    else
+      user
     end
-    result
   end
 
   def self.json(users=nil)
