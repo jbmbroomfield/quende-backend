@@ -7,7 +7,7 @@ RSpec.describe "Api::V1::Users", type: :request do
     it "returns the requested user" do
       get user_show_successful_url
       expect(response).to have_http_status(:ok)
-      expect(attributes).to eq(user_show_expected_attributes)
+      expect(json).to eq(user_show_expected_attributes)
     end
 
     it "returns not found if the slug does not belong to a user" do
