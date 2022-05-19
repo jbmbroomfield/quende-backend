@@ -41,6 +41,13 @@ module RenderHelper
         render json: serializer(object), status: status
     end
 
+    def render_object_json(object_name, object, status: :ok)
+        render json: {
+            success: true,
+            object_name => object.json
+        }, status: :ok
+    end
+
     private
 
     def class_string

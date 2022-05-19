@@ -22,12 +22,21 @@ class User < ApplicationRecord
   scope :members, -> { where.not(level: "guest") }
   scope :guests, -> { where(level: "guest") }
 
-  def json
-    {
+  def json(jwt=nil)
+    result = {
       username: username,
       slug: slug,
       level: level,
     }
+    if jwt
+      result[:jwt] = jwt
+    end
+    result
+  end
+
+  def self.json(users=nil)
+    users ||= self.all
+    users.map(&:json)
   end
 
   def set_slug_from_username

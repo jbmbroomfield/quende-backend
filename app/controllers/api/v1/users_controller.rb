@@ -5,8 +5,8 @@ class Api::V1::UsersController < ApplicationController
 	def create
 		user = User.create_member(user_params)
 		if user.valid?
-			token = encode_token({ user_id: user.id })
-			render json: { user: UserSerializer.new(user), jwt: token }, status: :created
+			jwt = encode_token({ user_id: user.id })
+			render json: user.json(jwt), status: :created
 		else
 			render_user_not_created(user)
 		end
@@ -17,25 +17,21 @@ class Api::V1::UsersController < ApplicationController
 		password = user_login_params[:password]
     if user && user.authenticate(password: password)
 			User.destroy_guest(current_user)
-			token = encode_token({ user_id: user.id })
-	    render json: { user: UserSerializer.new(user), jwt: token }, status: :ok
+			jwt = encode_token({ user_id: user.id })
+	    render json: user.json(jwt), status: :ok
     else
 			render_invalid_username_or_password
     end
   end
 
 	def index
-		render json: UserSerializer.new(User.members), status: :ok
+		render json: User.json, status: :ok
 	end
 
 	def show
 		user = User.find_by(slug: params[:user_slug])
 		if user
-			json = {
-				success: true,
-				user: user.json
-			}
-			render json: json, status: :ok
+			render json: user.json, status: :ok
 		else
 			render_user_not_found
 		end
@@ -43,11 +39,11 @@ class Api::V1::UsersController < ApplicationController
 
 	def current
 		if current_user
-	    render json: { user: UserSerializer.new(current_user) }, status: :ok
+			render json: current_user.json, status: :ok
 		else
 			user = User.create_guest
-			token = encode_token({ user_id: user.id })
-			render json: { user: UserSerializer.new(user), jwt: token }, status: :ok
+			jwt = encode_token({ user_id: user.id })
+			render json: user.json(jwt), status: :ok
 		end
 	end
 
