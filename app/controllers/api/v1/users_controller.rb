@@ -25,7 +25,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
 	def index
-		render json: User.json, status: :ok
+		render json: User.json(User.members), status: :ok
 	end
 
 	def show

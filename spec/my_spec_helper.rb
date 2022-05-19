@@ -33,7 +33,12 @@ def user2_auth
 end
 
 def json
-  JSON.parse(response.body).deep_symbolize_keys
+  body = JSON.parse(response.body)
+  if body.kind_of?(Array)
+    body.map(&:deep_symbolize_keys)
+  else
+    body.deep_symbolize_keys
+  end
 end
 
 def data
