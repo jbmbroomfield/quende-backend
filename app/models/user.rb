@@ -22,18 +22,13 @@ class User < ApplicationRecord
   scope :members, -> { where.not(level: "guest") }
   scope :guests, -> { where(level: "guest") }
 
-  def json(jwt=nil)
+  def json
     user = {
       username: username,
       slug: slug,
       level: level,
       avatar: avatar,
     }
-    if jwt
-      { user: user, jwt: jwt }
-    else
-      user
-    end
   end
 
   def self.json(users=nil)
