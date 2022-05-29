@@ -9,15 +9,15 @@ RSpec.describe "Api::V1::Users", type: :request do
     it "returns an array of all users" do
       get url
       expect(response).to have_http_status(:ok)
-      expect(json.length).to eq(User.count)
-      expect(json[0]).to eq(user1_attributes)
-      expect(json[1]).to eq(user2_attributes)
+      expect(data.length).to eq(User.count)
+      expect(data[0]).to eq(user1_attributes)
+      expect(data[1]).to eq(user2_attributes)
     end
 
     it "does not include guest users" do
       User.create_guest
       get url
-      expect(json.length).to eq(User.count - 1)
+      expect(data.length).to eq(User.count - 1)
     end
 
   end

@@ -10,7 +10,7 @@ RSpec.describe "Api::V1::Users", type: :request do
 			post url, params: login_success_body
 			expect(response).to have_http_status(:ok)
 			expect(jwt).to eq(user1_jwt)
-			expect(json[:user]).to eq(user1_attributes)
+			expect(data).to eq(user1_attributes)
   	end
 
 		it "rejects an incorrect username" do
