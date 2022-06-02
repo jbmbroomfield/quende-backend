@@ -4,27 +4,17 @@ class Api::V1::ForumsController < ApplicationController
 
   def create
    @forum = Forum.create(forum_params)
-    if @forum.valid?
-      @forum.make_super_admin(current_user)
-      @status = :created
-      render_forum
-    else
-      render_forum_not_created
-    end
+   @forum.valid? ? forum_created : forum_not_created
   end
 
   def index
     @forums = Forum.all
-    render_forums
+    forums
   end
 
   def show
-    forum = Forum.find_by(slug: params[:forum_slug])
-    if forum
-      render_obj(forum)
-    else
-      render_forum_not_found
-    end
+    @forum = Forum.find_by(slug: params[:forum_slug])
+    @forum ? forum : forum_not_found
   end
 
   private
@@ -37,17 +27,21 @@ class Api::V1::ForumsController < ApplicationController
     )
   end
 
-	def render_forum
+	def forum
     @data = @forum.json(user: current_user)
-    render_json
 	end
 
-	def render_forums
+  def forum_created
+    @forum.make_super_admin(current_user)
+    @status = :created
+    forum
+  end
+
+	def forums
     @data = Forum.json(forums: @forums, user: current_user)
-		render_json
 	end
 
-  def render_forum_not_created
+  def forum_not_created
     if @forum.errors.full_messages.include?("Slug must be unique")
       @errors = { "forum-create-title-input" => "Title unavailable." }
       @status = :forbidden
@@ -55,13 +49,11 @@ class Api::V1::ForumsController < ApplicationController
       @error = "Forum not created."
       @status = :internal_server_error
     end
-    render_json
   end
 
-  def render_forum_not_found
+  def forum_not_found
     @errors = { slug: "Forum not found." }
     @status = :not_found
-    render_json
   end
 
 end

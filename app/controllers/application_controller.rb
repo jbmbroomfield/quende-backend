@@ -1,6 +1,13 @@
 class ApplicationController < ActionController::API
     
-  include RenderHelper
+	def default_render
+		json = { success: !!@data }
+		json[:data] = @data if @data
+		json[:jwt] = @jwt if @jwt
+		json[:errors] = @errors if @errors
+		json[:error] = @error if @error
+		render json: json, status: @status || :ok
+	end
 
   def encode_token(payload)
     JWT.encode(payload, ENV['jwt_key'])
