@@ -107,9 +107,4 @@ class Api::V1::UsersController < ApplicationController
 		@status = :unauthorized
 	end
 
-	def user_not_found
-		@errors = { slug: "User not found." }
-		@status = :not_found
-	end
-
 end

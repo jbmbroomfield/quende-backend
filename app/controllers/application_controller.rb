@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-    
+  
 	def default_render
 		json = { success: !!@data }
 		json[:data] = @data if @data
@@ -44,44 +44,42 @@ class ApplicationController < ActionController::API
   end
 
   def require_user
-    render json: {
-      errors: {
-        slug: "Current user not found."
-      }
-    }, status: :not_found unless current_user
+    user_not_found unless current_user
+  end
+
+  def user_not_found
+		@errors = { slug: "User not found." }
+		@status = :not_found
+    default_render
   end
 
   def require_login
-    render json: {
-      errors: {
-        error: 'Please log in.'
-      }
-    }, status: :unauthorized unless logged_in?
+    please_login unless logged_in?
+  end
+
+  def please_login
+    @error = 'Please log in.'
+    @status = :unauthorized
+    default_render
   end
 
   def require_admin
-    render json: {
-      errors: {
-        error: 'Unauthorized'
-      }
-     }, status: :unauthorized unless admin?
+    unauthorized unless admin?
+  end
+
+  def unauthorized
+    @error = 'Unauthorized'
+    @status = :unauthorized
+    default_render
   end
 
   def require_viewer
     url = "forum/#{params[:subsection_slug]}/#{params[:topic_slug]}"
-    render json: {
-      errors: {
-        error: 'Unauthorized'
-      }
-     }, status: :unauthorized unless !topic || topic.can_view(current_user, url)
+    unauthorized unless !topic || topic.can_view(current_user, url)
   end
 
   def require_poster
-    render json: {
-      errors: {
-        error: 'Unauthorized'
-      }
-     }, status: :unauthorized unless !topic || topic.can_post(current_user, params[:password])
+    unauthorized unless !topic || topic.can_post(current_user, params[:password])
   end
 
   def subsection
