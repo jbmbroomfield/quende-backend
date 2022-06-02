@@ -11,19 +11,26 @@ class Forum < ApplicationRecord
 
   after_commit :broadcast_update
 
-  def json(user)
-    uf = user_forum(user)
+  def json(user: nil)
+    result = json_base
+    if user
+      result[:user_forum] = user_forum(user).json
+    end
+    result
+  end
+
+  def json_base
     {
       id: self.id,
       title: self.title,
       slug: self.slug,
       description: self.description,
       permissions: self.permissions,
-      user_forum: {
-        level: uf.level,
-        authority: uf.authority,
-      }
     }
+  end
+
+  def self.json(forums: self.all, user: nil)
+    forums.map{ |forum| forum.json(user: user)}
   end
 
   def broadcast_update

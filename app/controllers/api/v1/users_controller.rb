@@ -3,33 +3,35 @@ class Api::V1::UsersController < ApplicationController
 	before_action :require_login, only: [:update, :upload_avatar]
 
 	def create
-		user = User.create_member(user_params)
-		if user.valid?
-			render_user_jwt(user, :created)
+		@user = User.create_member(user_params)
+		if @user.valid?
+			@status = :created
+			render_user_jwt
 		else
-			render_user_not_created(user)
+			render_user_not_created
 		end
 	end
 
   def login
-    user = User.find_by(username: user_login_params[:username])
+    @user = User.find_by(username: user_login_params[:username])
 		password = user_login_params[:password]
-    if user && user.authenticate(password: password)
+    if @user && @user.authenticate(password: password)
 			User.destroy_guest(current_user)
-			render_user_jwt(user)
+			render_user_jwt
     else
 			render_invalid_username_or_password
     end
   end
 
 	def index
-		render_users(User.members)
+		@users = User.members
+		render_users
 	end
 
 	def show
-		user = User.find_by(slug: params[:user_slug])
-		if user
-			render_user(user)
+		@user = User.find_by(slug: params[:user_slug])
+		if @user
+			render_user
 		else
 			render_user_not_found
 		end
@@ -37,9 +39,11 @@ class Api::V1::UsersController < ApplicationController
 
 	def current
 		if current_user
-			render_user(current_user)
+			@user = current_user
+			render_user
 		else
-			render_user_jwt(User.create_guest)
+			@user = User.create_guest
+			render_user_jwt
 		end
 	end
 
@@ -50,6 +54,10 @@ class Api::V1::UsersController < ApplicationController
 	end
 
 	private
+
+	def status
+		@status ||= :ok
+	end
 
 	def user_params
 		params.require(:user).permit(
@@ -66,49 +74,43 @@ class Api::V1::UsersController < ApplicationController
     )
 	end
 
-	def render_user(user, status=:ok)
-		render json: { success: true, data: user.json }, status: status
+	def render_user
+		@data = @user.json
+		render_json
 	end
 
-	def render_user_jwt(user, status=:ok)
-		jwt = encode_token({ user_id: user.id })
-		render json: { success: true, data: user.json, jwt: jwt}, status: status
+	def render_user_jwt
+		@data = @user.json
+		@json = { jwt: encode_token({ user_id: @user.id }) }
+		render_json
 	end
 
-	def render_users(users, status=:ok)
-		render json: { success: true, data: User.json(users) }, status: status
+	def render_users
+		@data = User.json(users: @users)
+		render_json
 	end
 
-	def render_user_not_created(user)
-		if user.errors.full_messages.include?("Slug must be unique")
-			render json: {
-				errors: {
-					"register-username-input": "Username unavailable."
-				}
-			}, status: :forbidden
+	def render_user_not_created
+		if @user.errors.full_messages.include?("Slug must be unique")
+			@errors = { "register-username-input": "Username unavailable." }
+			@status = :forbidden
 		else
-			render json: {
-				errors: {
-					error: "User not created."
-				}
-			}, status: :internal_server_error
+			@errors = { error: "User not created." }
+			@status = :internal_server_error
 		end
+		render_json
 	end
 
 	def render_invalid_username_or_password
-		render json: {
-			errors: {
-				error: 'Invalid username or password.'
-			}
-		}, status: :unauthorized
+		@error = "Invalid username or password."
+		@status = :unauthorized
+		render_json
 	end
 
 	def render_user_not_found
-		render json: {
-			errors: {
-				slug: "User not found."
-			}
-		}, status: :not_found
+		@errors = { slug: "User not found." }
+		@status = :not_found
+		render_json
 	end
 
 end

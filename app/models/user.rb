@@ -31,8 +31,7 @@ class User < ApplicationRecord
     }
   end
 
-  def self.json(users=nil)
-    users ||= self.all
+  def self.json(users: self.all)
     users.map(&:json)
   end
 

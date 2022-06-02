@@ -12,6 +12,13 @@ class UserForum < ApplicationRecord
     UserForumsChannel.update(self)
   end
 
+  def json
+    {
+      level: level,
+      authority: authority,
+    }
+  end
+
   def user_slug
     user.slug
   end
